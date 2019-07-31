@@ -1,7 +1,7 @@
 specFileName: tango_api.txt
 apiTitle: Tango
 splitSpec: true
-codeSamples: true
+codeSamples: false
 swaggerUI: true
 travis: true
 repo: StDogbert/tango_api
