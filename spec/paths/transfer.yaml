@@ -1,0 +1,82 @@
+post:
+  tags:
+    - transfers
+  summary: Create transfer
+  description: Create transfer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '#/components/schemas/transfer'
+        examples:
+          valid:
+            summary: Valid request example
+            value:
+              send_amount: 76
+              destination:
+                country_code: ITA
+                country_name: Italy
+                city_code: Lonigo
+                city_name: Lonigo
+              currency: USD
+              details:
+                guid: 6dc6e864-4155-4d57-8c46-b9034f6d9ec1
+                send_amount: 76
+              receiver:
+                id: 12419fe5-2771-4212-bbaf-ab626bb11d03
+              agent:
+                guid: 02cd4e89-e28a-4bf6-8179-3d85d03a5041
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/transfer'
+          examples:
+            expected:
+              value:
+                send_amount: 76
+                destination:
+                  country_code: ITA
+                  country_name: Italy
+                  city_code: Lonigo
+                  city_name: Lonigo
+                currency: USD
+                agent:
+                  latitude: 51.52283
+                  website: ''
+                  phone: +44 20 7377 8855
+                  address: '28 Tabernacle St, London EC2A 4DD, UK'
+                  longitude: -0.08553
+                  service: 'cash-in, payout, payments'
+                  guid: 02cd4e89-e28a-4bf6-8179-3d85d03a5041
+                  distance: 0.02562311926132259
+                  working_hours: '9:00AM-6:00PM'
+                  name: Atlantis Art Materials
+                details:
+                  name: CMT
+                  guid: 6dc6e864-4155-4d57-8c46-b9034f6d9ec1
+                  source_currency: USD
+                  destination_currency: EUR
+                  exchange_rate: 0.7271
+                  fee: 3
+                  send_amount: 76
+                  total_send_amount: 79
+                  total_receive_amount: 55.2596
+                receiver:
+                  name: Piter Banner
+                  country_code: MDA
+                  city_name: Kishinev
+                  id: 12419fe5-2771-4212-bbaf-ab626bb11d03
+                  is_user: true
+                  phone: '37369000002'
+                id: 6c940cb8-1a3e-43bf-a1f9-8acff2793def
+                alias: TR094567
+    '401':
+      $ref: '#/components/responses/UnauthorizedError'
+    '500':
+      $ref: '#/components/responses/SomethingWrong'
+    default:
+      $ref: '#/components/responses/SomethingWrong'

@@ -1,0 +1,33 @@
+get:
+  tags:
+    - advertising
+  summary: Advertising
+  description: Get advertising info
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/advertising'
+          examples:
+            expected:
+              value:
+                - type: browser
+                  url: <some url 1>
+                  image_url: <some image url 1>
+                - type: browser
+                  url: <some url 2>
+                  image_url: <some image url 2>
+                - type: container
+                  url: <some url 3>
+                  image_url: <some image url 3>
+                  header: <some header 3>
+    '401':
+      $ref: '#/components/responses/UnauthorizedError'
+    '500':
+      $ref: '#/components/responses/SomethingWrong'
+    default:
+      $ref: '#/components/responses/SomethingWrong'

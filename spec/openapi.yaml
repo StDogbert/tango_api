@@ -1,0 +1,41 @@
+openapi: 3.0.0
+info:
+  version: 1.0.5
+  title: New Tango API
+  description: This is a sample for new Tango API
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: 'https://virtserver.swaggerhub.com/DotFinance4/Tango/1'
+tags:
+  - name: user
+    description: Everything about your user
+    externalDocs:
+      description: Find out more
+      url: 'http://tango.md/ru/'
+  - name: advertising
+    description: Advertising materials
+    externalDocs:
+      description: Find out more
+      url: 'http://tango.md/ru/'
+  - name: agents
+    description: Agents
+    externalDocs:
+      description: Find out more
+      url: 'http://tango.md/ru/'
+  - name: reports
+    description: Reports
+    externalDocs:
+      description: Find out more
+      url: 'http://tango.md/ru/'
+  - name: transfers
+    description: Transfers
+    externalDocs:
+      description: Find out more
+      url: 'http://tango.md/ru/'
+  - name: dictionaries
+    description: Dictionaries
+    externalDocs:
+      description: Find out more
+      url: 'http://tango.md/ru/'
+security:
+  - authentication: []

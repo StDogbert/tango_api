@@ -1,0 +1,33 @@
+required:
+  - firstname
+  - lastname
+  - email
+  - password
+  - birthdate
+  - gender
+  - phone
+properties:
+  firstname:
+    description: The user first name
+    type: string
+  lastname:
+    description: The user last name
+    type: string
+  email:
+    description: The user mail
+    type: string
+    format: email
+  birthdate:
+    description: The user birth date
+    type: string
+    format: date
+  gender:
+    description: The user gender
+    type: string
+    enum:
+      - male
+      - female
+  phone:
+    description: The user phone
+    type: string
+    format: phone

@@ -1,0 +1,45 @@
+post:
+  tags:
+    - user
+  summary: Login user
+  description: Login your user
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          required:
+            - email
+            - password
+          properties:
+            email:
+              description: The user mail
+              type: string
+              format: email
+            password:
+              description: The user password
+              type: string
+              format: password
+        examples:
+          valid:
+            summary: Valid request example
+            value:
+              email: jhonsmith@examplemail.com
+              password: Somecryptlypassword1
+          invalid:
+            summary: Invalid request example
+            value:
+              password: Somecryptlypassword1
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          examples:
+            expected:
+              value:
+                token: <login token>
+    '500':
+      $ref: '#/components/responses/SomethingWrong'
+    default:
+      $ref: '#/components/responses/SomethingWrong'
