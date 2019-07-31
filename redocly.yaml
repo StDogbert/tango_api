@@ -1,0 +1,8 @@
+specFileName: tango_api.txt
+apiTitle: Tango
+splitSpec: true
+codeSamples: true
+swaggerUI: true
+travis: true
+repo: StDogbert/tango_api
+oasVersion: 3.0.0

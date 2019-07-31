@@ -1,0 +1,45 @@
+required:
+  - name
+  - guid
+  - source_currency
+  - destination_currency
+  - exchange_rate
+  - fee
+  - send_amount
+  - total_send_amount
+  - total_receive_amount
+properties:
+  name:
+    description: Organization name
+    type: string
+  guid:
+    description: Tunnel GUID for unique organization and currency combination
+    type: string
+  source_currency:
+    description: Source currency code
+    type: string
+    pattern: '^[A-Z]{3}$'
+  destination_currency:
+    description: Destination currency code
+    type: string
+    pattern: '^[A-Z]{3}$'
+  exchange_rate:
+    description: Exchange rate
+    type: number
+    format: float
+  fee:
+    description: Fee amount in source currency
+    type: number
+    format: float
+  send_amount:
+    description: Amount in source currency to send
+    type: number
+    format: float
+  total_send_amount:
+    description: Total amount in source currency to pay including fee
+    type: number
+    format: float
+  total_receive_amount:
+    description: Expected amount in destianation currency
+    type: number
+    format: float

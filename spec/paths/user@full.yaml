@@ -1,0 +1,31 @@
+get:
+  tags:
+    - user
+  summary: User full info
+  description: Get your user full info. IN PROGRESS
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/user_full'
+          examples:
+            expected:
+              value:
+                firstname: Jhon
+                lastname: Smith
+                email: jhonsmith@examplemail.com
+                birthdate: '1992-07-29'
+                gender: male
+                phone: '+37369000001'
+                document_type: passport
+                document: <some document id>
+    '401':
+      $ref: '#/components/responses/UnauthorizedError'
+    '500':
+      $ref: '#/components/responses/SomethingWrong'
+    default:
+      $ref: '#/components/responses/SomethingWrong'

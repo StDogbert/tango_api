@@ -1,0 +1,40 @@
+get:
+  tags:
+    - dictionaries
+  summary: Locations list
+  description: Get locations list
+  parameters:
+    - in: query
+      name: search
+      required: true
+      schema:
+        type: string
+        pattern: '^[A-Za-z]+'
+      example: lon
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/location'
+          examples:
+            expected:
+              value:
+                - country_code: USA
+                  country_name: United States
+                  city_code: USA FL LONGWOOD
+                  city_name: Longwood
+                  state: Florida
+                - country_code: ITA
+                  country_name: Italy
+                  city_code: Lonigo
+                  city_name: Lonigo
+    '401':
+      $ref: '#/components/responses/UnauthorizedError'
+    '500':
+      $ref: '#/components/responses/SomethingWrong'
+    default:
+      $ref: '#/components/responses/SomethingWrong'

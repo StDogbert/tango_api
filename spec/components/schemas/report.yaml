@@ -1,0 +1,47 @@
+required:
+  - amount
+  - execution_date
+  - operation_id
+  - type
+  - currency
+properties:
+  amount:
+    description: Operation amount
+    type: number
+    format: float
+  execution_date:
+    description: Execution date
+    type: string
+    format: date-time
+  operation_id:
+    description: Operation id
+    type: string
+    format: guid
+  correspondent_firstname:
+    description: Correspondent first name
+    type: string
+  correspondent_lastname:
+    description: Correspondent last name
+    type: string
+  type:
+    description: Operation type
+    type: string
+    enum:
+      - transfer
+      - payout
+      - payment
+  currency:
+    description: Operation currency code
+    type: string
+    pattern: '^[A-Z]{3}$'
+  fee_currency:
+    description: Operation fee currency code
+    type: string
+    pattern: '^[A-Z]{3}$'
+  fee:
+    description: Operation fee amount
+    type: number
+    format: float
+  payment_destination:
+    description: Payment destination
+    type: string

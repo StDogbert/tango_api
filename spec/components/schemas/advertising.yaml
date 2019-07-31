@@ -1,0 +1,22 @@
+required:
+  - type
+  - url
+  - image_url
+properties:
+  type:
+    description: Advertising type
+    type: string
+    enum:
+      - browser
+      - container
+  url:
+    description: Advertising url
+    type: string
+    format: url
+  image_url:
+    description: Advertising image url
+    type: string
+    format: url
+  header:
+    description: 'Advertising header, for container type only'
+    type: string

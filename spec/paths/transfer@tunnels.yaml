@@ -1,0 +1,67 @@
+get:
+  tags:
+    - transfers
+  summary: Available tunnels list
+  description: Get payment tunnels list
+  parameters:
+    - in: query
+      name: country
+      required: true
+      schema:
+        type: string
+      example: ITA
+    - in: query
+      name: amount
+      required: true
+      schema:
+        type: number
+        format: float
+      example: 54.3
+    - in: query
+      name: currency
+      required: true
+      schema:
+        type: string
+      example: USD
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/payment_tunnel'
+          examples:
+            expected:
+              value:
+                - name: CMT
+                  guid: 6dc6e864-4155-4d57-8c46-b9034f6d9ec1
+                  source_currency: USD
+                  destination_currency: EUR
+                  exchange_rate: 0.7271
+                  fee: 3
+                  total_send_amount: 57.3
+                  total_receive_amount: 39.48
+                - name: CMT
+                  guid: baa3a9ae-524f-4fd6-855a-b6791463784e
+                  source_currency: USD
+                  destination_currency: USD
+                  exchange_rate: 1
+                  fee: 1.5
+                  total_send_amount: 55.8
+                  total_receive_amount: 54.3
+                - name: Sigue
+                  guid: 2798cffe-59cb-4224-ae84-2677907a558b
+                  source_currency: USD
+                  destination_currency: USD
+                  exchange_rate: 1
+                  fee: 2
+                  total_send_amount: 56.3
+                  total_receive_amount: 54.3
+    '401':
+      $ref: '#/components/responses/UnauthorizedError'
+    '500':
+      $ref: '#/components/responses/SomethingWrong'
+    default:
+      $ref: '#/components/responses/SomethingWrong'

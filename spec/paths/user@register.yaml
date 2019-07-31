@@ -1,0 +1,50 @@
+post:
+  tags:
+    - user
+  summary: Registers user
+  description: Create your user
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          allOf:
+            - $ref: '#/components/schemas/user'
+            - type: object
+              properties:
+                password:
+                  description: The user password
+                  type: string
+                  format: password
+        examples:
+          valid:
+            summary: Valid request example
+            value:
+              firstname: Jhon
+              lastname: Smith
+              email: jhonsmith@examplemail.com
+              password: Somecryptlypassword1
+              birthdate: '1992-07-29'
+              gender: male
+              phone: '+37369000001'
+          invalid:
+            summary: Invalid request example
+            value:
+              firstname: Jhon
+              email: jhonsmith@examplemail.com
+              password: Somecryptlypassword1
+              birthdate: '1992-07-29'
+              gender: transgender
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          examples:
+            expected:
+              value:
+                token: <login token>
+    '500':
+      $ref: '#/components/responses/SomethingWrong'
+    default:
+      $ref: '#/components/responses/SomethingWrong'

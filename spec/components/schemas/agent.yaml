@@ -1,0 +1,59 @@
+required:
+  - latitude
+  - longitude
+  - distance
+  - guid
+  - name
+  - address
+  - phone
+  - working_hours
+properties:
+  latitude:
+    description: Latitude
+    type: number
+    format: double
+  longitude:
+    description: Longitude
+    type: number
+    format: double
+  name:
+    description: Agent name
+    type: string
+  address:
+    description: Agent address
+    type: string
+  phone:
+    description: Agent phone
+    type: string
+    format: phone
+  website:
+    description: Agent website
+    type: string
+    format: url
+  working_hours:
+    description: Agent working hours
+    type: object
+    properties:
+      timeFrom:
+        description: Agent from working hours
+        type: string
+      timeUntil:
+        description: Agent untill working hours
+        type: string
+  guid:
+    description: Agent guid
+    type: string
+    format: guid
+  distance:
+    description: Distance to agent
+    type: number
+    format: double
+  service:
+    type: array
+    uniqueItems: true
+    items:
+      type: string
+      enum:
+        - cash-in
+        - payout
+        - payments
