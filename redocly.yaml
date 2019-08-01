@@ -1,6 +1,6 @@
 specFileName: tango_api.txt
 apiTitle: Tango
-splitSpec: true
+splitSpec: false
 codeSamples: false
 swaggerUI: true
 travis: true

@@ -1,954 +1,139 @@
 openapi: 3.0.0
 info:
-  version: "1.0.9"
-  title: 'New Tango API'
-  description: 'This is a sample for new Tango API'
-servers:
-# Added by API Auto Mocking Plugin
-  - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/DotFinance4/Tango/1
+  version: 1.0.9
+  title: Tango API
+  description: This is a sample for Tango API
 tags:
-  - name: user
-    description: Everything about your user
-    externalDocs:
-      description: Find out more
-      url: 'http://tango.md/ru/'
-  - name: advertising
-    description: Advertising materials
-    externalDocs:
-      description: Find out more
-      url: 'http://tango.md/ru/'
-  - name: agents
-    description: Agents
-    externalDocs:
-      description: Find out more
-      url: 'http://tango.md/ru/'
-  - name: reports
-    description: Reports
-    externalDocs:
-      description: Find out more
-      url: 'http://tango.md/ru/'
-  - name: transfers
+  - name: Transfers
     description: Transfers
     externalDocs:
       description: Find out more
-      url: 'http://tango.md/ru/'
-  - name: dictionaries
-    description: Dictionaries
-    externalDocs:
-      description: Find out more
-      url: 'http://tango.md/ru/'
-      
+      url: http://tango.md
 paths:
-  /user/register:
+  /transfers:
     post:
       tags:
-        - user
-      summary: Registers user
-      description: 'Create your user'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              allOf:
-                - $ref: '#/components/schemas/user'
-                - type: object
-                  properties:
-                    password:
-                      description: The user password
-                      type: string  
-                      format: password
-            examples:
-              valid:
-                summary: Valid request example
-                value:
-                  firstname: Jhon
-                  lastname: Smith
-                  email: jhonsmith@examplemail.com
-                  password: Somecryptlypassword1
-                  birthdate: '1992-07-29'
-                  gender: male
-                  phone: '+37369000001'
-              invalid:
-                summary: Invalid request example
-                value:
-                  firstname: Jhon
-                  email: jhonsmith@examplemail.com
-                  password: Somecryptlypassword1
-                  birthdate: '1992-07-29'
-                  gender: transgender
-      responses:
-        200:
-          description: OK
-          content:
-            application/json: 
-              examples:
-                expected:
-                  value:
-                    token: "<login token>"
-        500:
-          $ref: '#/components/responses/SomethingWrong'
-        default:
-          $ref: '#/components/responses/SomethingWrong' 
-          
-  /user/login:
-    post:
-      tags:
-        - user
-      summary: Login user
-      description: 'Login your user'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              required: 
-                - email
-                - password
-              properties:
-                email:
-                  description: The user mail
-                  type: string
-                  format: email
-                password:
-                  description: The user password
-                  type: string  
-                  format: password
-            examples:
-              valid:
-                summary: Valid request example
-                value:
-                  email: jhonsmith@examplemail.com
-                  password: Somecryptlypassword1
-              invalid:
-                summary: Invalid request example
-                value:
-                  password: Somecryptlypassword1
-      responses:
-        200:
-          description: OK
-          content:
-            application/json: 
-              examples:
-                expected:
-                  value:
-                    token: "<login token>"
-        500:
-          $ref: '#/components/responses/SomethingWrong'
-        default:
-          $ref: '#/components/responses/SomethingWrong' 
-          
-  /user/short:
-    get:
-      tags:
-        - user
-      summary: User short info
-      description: 'Get your user short info'
-      responses:
-        200:
-          description: OK
-          content:
-            application/json: 
-              examples:
-                expected:
-                  value:
-                    firstname: Jhon
-                    lastname: Smith 
-                    avatar: '<some url>'
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        500:
-          $ref: '#/components/responses/SomethingWrong'
-        default:
-          $ref: '#/components/responses/SomethingWrong' 
-          
-  /user/full:
-    get:
-      tags:
-        - user
-      summary: User full info
-      description: 'Get your user full info. IN PROGRESS'
-      responses:
-        200:
-          description: OK
-          content:
-            application/json: 
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/user_full'
-              examples:
-                expected:
-                  value:
-                    firstname: Jhon
-                    lastname: Smith
-                    email: jhonsmith@examplemail.com
-                    birthdate: '1992-07-29'
-                    gender: male
-                    phone: '+37369000001'
-                    document_type: passport
-                    document: '<some document id>'
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        500:
-          $ref: '#/components/responses/SomethingWrong'
-        default:
-          $ref: '#/components/responses/SomethingWrong' 
-          
-  /user/change_password:
-    post:
-      tags:
-        - user
-      summary: Change user password
-      description: 'Change user password'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              required:
-                - old_password
-                - new_password
-              properties:
-                old_password:
-                  description: Old user password
-                  type: string  
-                  format: password
-                new_password:
-                  description: New user password
-                  type: string  
-                  format: password
-            examples:
-              valid:
-                summary: Valid request example
-                value:
-                  old_password: '123456'
-                  new_password: '1234567'
-              invalid:
-                summary: Invalid request example
-                value:
-                  new_password: '1234567'
-      responses:
-        200:
-          description: OK
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        500:
-          $ref: '#/components/responses/SomethingWrong'
-        default:
-          $ref: '#/components/responses/SomethingWrong' 
-          
-  /advertising:
-    get:
-      tags:
-        - advertising
-      summary: Advertising
-      description: 'Get advertising info'
-      responses:
-        200:
-          description: OK
-          content:
-            application/json: 
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/advertising'
-              examples:
-                expected:
-                  value:
-                    - type: browser
-                      url: '<some url 1>'
-                      image_url: '<some image url 1>'
-                    - type: browser
-                      url: '<some url 2>'
-                      image_url: '<some image url 2>'
-                    - type: container
-                      url: '<some url 3>'
-                      image_url: '<some image url 3>'
-                      header:  '<some header 3>'
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        500:
-          $ref: '#/components/responses/SomethingWrong'
-        default:
-          $ref: '#/components/responses/SomethingWrong'
-          
-  /agents:
-    get:
-      tags:
-        - agents
-      summary: Agents list
-      description: 'Get agents list'
-      responses:
-        200:
-          description: OK
-          content:
-            application/json: 
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/agent'
-              examples:
-                expected:
-                  value:
-                    - latitude: 51.522830
-                      website: ""
-                      phone: "+44 20 7377 8855"
-                      address: "28 Tabernacle St, London EC2A 4DD, UK"
-                      longitude: -0.085530
-                      service : "cash-in, payout, payments"
-                      guid : "02cd4e89-e28a-4bf6-8179-3d85d03a5041"
-                      distance : 0.025623119261322588
-                      working_hours : "9:00AM-6:00PM"
-                      name : "Atlantis Art Materials"
-                    - latitude: 51.523397
-                      website: ""
-                      phone: "+44 20 7825 8000"
-                      address: "17 Epworth St, London EC2A 4DL, UK"
-                      longitude: -0.085300
-                      service : "cash-in, payout, payments"
-                      guid : "02cd4e89-e28a-4bf6-8179-3d85d03a5041"
-                      distance : 0.089854027598162078
-                      working_hours : "9:00AM-6:00PM"
-                      name : "Interactive Data"
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        500:
-          $ref: '#/components/responses/SomethingWrong'
-        default:
-          $ref: '#/components/responses/SomethingWrong' 
-  
-  /reports:
-    get:
-      tags:
-        - reports
-      summary: Reports info
-      description: 'Get reports info'
+        - Transfers
+      summary: Create transfer
+      description: Create new transfer
       parameters:
         - in: query
-          name: filter
+          name: amount
+          description: Send amount
+          required: true
           schema:
-            type: array
-            uniqueItems: true
-            items:
-              type: string
-              enum: [transfer, payout, payment]
+            type: number
+            format: double
+            example: 100.0
+        - in: query
+          name: currency
+          description: Send currency
+          required: true
+          schema:
+            type: string
+            pattern: "^[A-Z]{3}$"
+            example: usd
+        - in: query
+          name: destination[id]
+          description: Destination location
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: d290f1ee-6c54-4b01-90e6-d701748f0851
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/transfer"
+            # examples:
+            #   valid:
+            #     summary: Valid request example
+            #     value:
+            #       amount: 76.0
+            #       destination:
+            #         country_code: 'ITA'
+            #         country_name: 'Italy'
+            #         city_code: 'Lonigo'
+            #         city_name: 'Lonigo'
+            #       currency: 'USD'
+            #       details:
+            #         guid: '6dc6e864-4155-4d57-8c46-b9034f6d9ec1'
+            #         amount: 76.0
+            #       receiver:
+            #         id: '12419fe5-2771-4212-bbaf-ab626bb11d03'
+            #       agent:
+            #         guid: '02cd4e89-e28a-4bf6-8179-3d85d03a5041'
       responses:
         200:
           description: OK
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/report'
-              examples:
-                expected:
-                  value:
-                    - amount: 300
-                      execution_date: "2019-07-01T19:13:51.418Z"
-                      operation_id: "SIG86754"
-                      correspondent_firstname: "Jhon"
-                      correspondent_lastname: "Doe"
-                      type: "transfer"
-                      currency: "EUR"
-                      fee_currency: "EUR"
-                      fee: 1.5
-                    - amount: 300
-                      execution_date: "2019-07-01T19:28:03.293Z"
-                      operation_id: "SIG86755"
-                      correspondent_firstname: "Jane"
-                      correspondent_lastname: "Doe"
-                      type: "payout"
-                      currency: "EUR"
-                    - amount: 120
-                      execution_date: "2019-07-01T09:15:03.008Z"
-                      operation_id: "<FACTURA MOLDOVA GAZ>"
-                      payment_destination: "Moldovagaz"
-                      type: "payment"
-                      currency: "MDL"
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
+                $ref: "#/components/schemas/transfer"
+              # examples:
+              #   expected:
+              #     value:
+              #       amount: 76.0
+              #       destination:
+              #         country_code: 'ITA'
+              #         country_name: 'Italy'
+              #         city_code: 'Lonigo'
+              #         city_name: 'Lonigo'
+              #       currency: 'USD'
+              #       agent:
+              #         latitude: 51.522830
+              #         website: ""
+              #         phone: "+44 20 7377 8855"
+              #         address: "28 Tabernacle St, London EC2A 4DD, UK"
+              #         longitude: -0.085530
+              #         service : "cash-in, payout, payments"
+              #         guid : "02cd4e89-e28a-4bf6-8179-3d85d03a5041"
+              #         distance : 0.025623119261322588
+              #         working_hours : "9:00AM-6:00PM"
+              #         name : "Atlantis Art Materials"
+              #       details:
+              #         name: 'CMT'
+              #         guid: '6dc6e864-4155-4d57-8c46-b9034f6d9ec1'
+              #         send_currency: 'USD'
+              #         receive_currency: 'EUR'
+              #         exchange_rate: 0.7271
+              #         fee_amount: 3
+              #         amount: 76.0
+              #         total_amount: 79.0
+              #         total_receive_amount: 55.2596
+              #       receiver:
+              #         name: 'Piter Banner'
+              #         country_code: 'MDA'
+              #         city_name: 'Kishinev'
+              #         id: '12419fe5-2771-4212-bbaf-ab626bb11d03'
+              #         is_user: true
+              #         phone: '37369000002'
+              #       id: '6c940cb8-1a3e-43bf-a1f9-8acff2793def'
+              #       code: 'TR094567'
+        "401":
+          $ref: "#/components/responses/unauthorized_error"
         500:
-          $ref: '#/components/responses/SomethingWrong'
+          $ref: "#/components/responses/something_wrong"
         default:
-          $ref: '#/components/responses/SomethingWrong' 
-  
-  /transfer/currencies:
-    get:
-      tags:
-        - transfers
-      summary: Available transfer currencies
-      description: 'Get available transfer currencies'
-      responses:
-        200:
-          description: OK
-          content:
-            application/json: 
-              schema:
-                type: array
-                items:
-                  description: Operation currency code
-                  type: string
-                  pattern: '^[A-Z]{3}$'
-              examples:
-                expected:
-                  value:
-                    - EUR
-                    - USD
-                    - MDL
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        500:
-          $ref: '#/components/responses/SomethingWrong'
-        default:
-          $ref: '#/components/responses/SomethingWrong'
-  
-  /locations:
-    get:
-      tags:
-        - dictionaries
-      summary: Locations list
-      description: 'Get locations list'
-      parameters:
-        - in: query
-          name: search
-          required: true
-          schema:
-            type: string
-            pattern: '^[A-Za-z]+'
-          example: 'lon'
-      responses:
-        200:
-          description: OK
-          content:
-            application/json: 
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/location'
-              examples:
-                expected:
-                  value:
-                    - country_code: 'USA'
-                      country_name: 'United States'
-                      city_code: 'USA FL LONGWOOD'
-                      city_name: 'Longwood'
-                      state: 'Florida'
-                    - country_code: 'ITA'
-                      country_name: 'Italy'
-                      city_code: 'Lonigo'
-                      city_name: 'Lonigo'
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        500:
-          $ref: '#/components/responses/SomethingWrong'
-        default:
-          $ref: '#/components/responses/SomethingWrong'
-    
-  /transfer/tunnels:
-    get:
-      tags:
-        - transfers
-      summary: Available tunnels list
-      description: 'Get payment tunnels list'
-      parameters:
-        - in: query
-          name: country
-          required: true
-          schema:
-            type: string
-          example: 'ITA'
-        - in: query
-          name: amount
-          required: true
-          schema:
-            type: number
-            format: float
-          example: 54.3
-        - in: query
-          name: currency
-          required: true
-          schema:
-            type: string
-          example: 'USD'
-      responses:
-        200:
-          description: OK
-          content:
-            application/json: 
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/payment_tunnel'
-              examples:
-                expected:
-                  value:
-                    - name: 'CMT'
-                      guid: '6dc6e864-4155-4d57-8c46-b9034f6d9ec1'
-                      source_currency: 'USD'
-                      destination_currency: 'EUR'
-                      exchange_rate: 0.7271
-                      fee: 3
-                      total_send_amount: 57.3
-                      total_receive_amount: 39.48
-                    - name: 'CMT'
-                      guid: 'baa3a9ae-524f-4fd6-855a-b6791463784e'
-                      source_currency: 'USD'
-                      destination_currency: 'USD'
-                      exchange_rate: 1
-                      fee: 1.5
-                      total_send_amount: 55.8
-                      total_receive_amount: 54.3
-                    - name: 'Sigue'
-                      guid: '2798cffe-59cb-4224-ae84-2677907a558b'
-                      source_currency: 'USD'
-                      destination_currency: 'USD'
-                      exchange_rate: 1
-                      fee: 2
-                      total_send_amount: 56.3
-                      total_receive_amount: 54.3
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        500:
-          $ref: '#/components/responses/SomethingWrong'
-        default:
-          $ref: '#/components/responses/SomethingWrong'
-                      
-  /transfer/correspondents:
-    get:
-      tags:
-        - transfers
-      summary: Available correspondents list
-      description: 'Get correspondents list'
-      responses:
-        200:
-          description: OK
-          content:
-            application/json: 
-              schema:
-                type: object
-                properties:
-                  created:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/correspondent'
-                  generated:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/correspondent'
-              examples:
-                expected:
-                  value:
-                    created:
-                      - name: 'Doe Bill'
-                        country_code: 'USA'
-                        city_name: 'New York'
-                        id: '08af1651-affd-4e87-88cf-3ccc5269858c'
-                        is_user: false
-                      - name: 'Jhon Smith'
-                        country_code: 'ITA'
-                        city_name: 'Rome'
-                        id: 'a531b9f3-822d-4817-9641-f628a984d1aa'
-                        is_user: false
-                    generated:
-                      - name: 'Jack Black'
-                        country_code: 'MDA'
-                        city_name: 'Kishinev'
-                        id: 'f42e5570-0b04-4973-898f-445f342a0954'
-                        is_user: true
-                        phone: '37369000001'
-                      - name: 'Piter Banner'
-                        country_code: 'MDA'
-                        city_name: 'Kishinev'
-                        id: '12419fe5-2771-4212-bbaf-ab626bb11d03'
-                        is_user: true
-                        phone: '37369000002'
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        500:
-          $ref: '#/components/responses/SomethingWrong'
-        default:
-          $ref: '#/components/responses/SomethingWrong'
-                        
-  /transfer:
-    post:
-      tags:
-        - transfers
-      summary: Create transfer
-      description: 'Create transfer'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/transfer'
-            examples:
-              valid:
-                summary: Valid request example
-                value:
-                  send_amount: 76.0
-                  destination:
-                    country_code: 'ITA'
-                    country_name: 'Italy'
-                    city_code: 'Lonigo'
-                    city_name: 'Lonigo'
-                  currency: 'USD'
-                  details: 
-                    guid: '6dc6e864-4155-4d57-8c46-b9034f6d9ec1'
-                    send_amount: 76.0
-                  receiver:
-                    id: '12419fe5-2771-4212-bbaf-ab626bb11d03'
-                  agent: 
-                    guid: '02cd4e89-e28a-4bf6-8179-3d85d03a5041'
-      responses:
-        200:
-          description: OK
-          content:
-            application/json: 
-              schema:
-                $ref: '#/components/schemas/transfer'
-              examples:
-                expected:
-                  value:
-                    send_amount: 76.0
-                    destination:
-                      country_code: 'ITA'
-                      country_name: 'Italy'
-                      city_code: 'Lonigo'
-                      city_name: 'Lonigo'
-                    currency: 'USD'
-                    agent: 
-                      latitude: 51.522830
-                      website: ""
-                      phone: "+44 20 7377 8855"
-                      address: "28 Tabernacle St, London EC2A 4DD, UK"
-                      longitude: -0.085530
-                      service : "cash-in, payout, payments"
-                      guid : "02cd4e89-e28a-4bf6-8179-3d85d03a5041"
-                      distance : 0.025623119261322588
-                      working_hours : "9:00AM-6:00PM"
-                      name : "Atlantis Art Materials"
-                    details:
-                      name: 'CMT'
-                      guid: '6dc6e864-4155-4d57-8c46-b9034f6d9ec1'
-                      source_currency: 'USD'
-                      destination_currency: 'EUR'
-                      exchange_rate: 0.7271
-                      fee: 3
-                      send_amount: 76.0
-                      total_send_amount: 79.0
-                      total_receive_amount: 55.2596
-                    receiver:
-                      name: 'Piter Banner'
-                      country_code: 'MDA'
-                      city_name: 'Kishinev'
-                      id: '12419fe5-2771-4212-bbaf-ab626bb11d03'
-                      is_user: true
-                      phone: '37369000002'
-                    id: '6c940cb8-1a3e-43bf-a1f9-8acff2793def'
-                    alias: 'TR094567'
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        500:
-          $ref: '#/components/responses/SomethingWrong'
-        default:
-          $ref: '#/components/responses/SomethingWrong'
-          
-  /transfers:
-    get:
-      tags:
-        - transfers
-      summary: Search transfer by code
-      description: 'Search transfer by code'
-      parameters:
-        - in: query
-          name: code
-          required: true
-          schema:
-            type: string
-          example: 'SIG826345'
-      responses:
-            200:
-              description: Transfer exists
-              content:
-                application/json: 
-                  schema:
-                    $ref: '#/components/schemas/transfer'
-                  examples:
-                    created_receive:
-                      value:
-                        send_amount: 76.0
-                        destination:
-                          country_code: 'ITA'
-                          country_name: 'Italy'
-                          city_code: 'Lonigo'
-                          city_name: 'Lonigo'
-                        currency: 'USD'
-                        details:
-                          name: 'CMT'
-                          guid: '6dc6e864-4155-4d57-8c46-b9034f6d9ec1'
-                          source_currency: 'USD'
-                          destination_currency: 'EUR'
-                          exchange_rate: 0.7271
-                          fee: 3
-                          send_amount: 76.0
-                          total_send_amount: 79.0
-                          total_receive_amount: 55.2596
-                        sender:
-                          name: 'Jhon Smith'
-                          country_code: 'ITA'
-                          city_name: 'Rome'
-                          id: 'a531b9f3-822d-4817-9641-f628a984d1aa'
-                          is_user: true
-                          phone: '37369000002'
-                        id: 'b0b9b50e-40a9-4c9b-be65-afe655be86d1'
-                        alias: 'TR739274'
-             
-            '401':
-              $ref: '#/components/responses/UnauthorizedError'
-            500:
-              $ref: '#/components/responses/SomethingWrong'
-            default:
-              $ref: '#/components/responses/SomethingWrong'
-          
-  /transfer/{transfer_id}:
-    get:
-      tags:
-        - transfers
-      summary: Validate transfer
-      description: 'Search existing transfer'
-      parameters:
-        - in: path
-          name: transfer_id
-          required: true
-          schema:
-            type: string
-          example: '6c940cb8-1a3e-43bf-a1f9-8acff2793def'
-      responses:
-        200:
-          description: Transfer exists
-          content:
-            application/json: 
-              schema:
-                $ref: '#/components/schemas/transfer'
-              examples:
-                created_send:
-                  value:
-                    send_amount: 76.0
-                    destination:
-                      country_code: 'ITA'
-                      country_name: 'Italy'
-                      city_code: 'Lonigo'
-                      city_name: 'Lonigo'
-                    currency: 'USD'
-                    agent: 
-                      latitude: 51.522830
-                      website: ""
-                      phone: "+44 20 7377 8855"
-                      address: "28 Tabernacle St, London EC2A 4DD, UK"
-                      longitude: -0.085530
-                      service : "cash-in, payout, payments"
-                      guid : "02cd4e89-e28a-4bf6-8179-3d85d03a5041"
-                      distance : 0.025623119261322588
-                      working_hours : "9:00AM-6:00PM"
-                      name : "Atlantis Art Materials"
-                    details:
-                      name: 'CMT'
-                      guid: '6dc6e864-4155-4d57-8c46-b9034f6d9ec1'
-                      source_currency: 'USD'
-                      destination_currency: 'EUR'
-                      exchange_rate: 0.7271
-                      fee: 3
-                      send_amount: 76.0
-                      total_send_amount: 79.0
-                      total_receive_amount: 55.2596
-                    receiver:
-                      name: 'Piter Banner'
-                      country_code: 'MDA'
-                      city_name: 'Kishinev'
-                      id: '12419fe5-2771-4212-bbaf-ab626bb11d03'
-                      is_user: true
-                      phone: '37369000002'
-                    id: '6c940cb8-1a3e-43bf-a1f9-8acff2793def'
-                    alias: 'TR094567'
-                send_confirmed:
-                  value:
-                    send_amount: 76.0
-                    destination:
-                      country_code: 'ITA'
-                      country_name: 'Italy'
-                      city_code: 'Lonigo'
-                      city_name: 'Lonigo'
-                    currency: 'USD'
-                    agent: 
-                      latitude: 51.522830
-                      website: ""
-                      phone: "+44 20 7377 8855"
-                      address: "28 Tabernacle St, London EC2A 4DD, UK"
-                      longitude: -0.085530
-                      service : "cash-in, payout, payments"
-                      guid : "02cd4e89-e28a-4bf6-8179-3d85d03a5041"
-                      distance : 0.025623119261322588
-                      working_hours : "9:00AM-6:00PM"
-                      name : "Atlantis Art Materials"
-                    details:
-                      name: 'CMT'
-                      guid: '6dc6e864-4155-4d57-8c46-b9034f6d9ec1'
-                      source_currency: 'USD'
-                      destination_currency: 'EUR'
-                      exchange_rate: 0.7271
-                      fee: 3
-                      send_amount: 76.0
-                      total_send_amount: 79.0
-                      total_receive_amount: 55.2596
-                    receiver:
-                      name: 'Piter Banner'
-                      country_code: 'MDA'
-                      city_name: 'Kishinev'
-                      id: '12419fe5-2771-4212-bbaf-ab626bb11d03'
-                      is_user: true
-                      phone: '37369000002'
-                    id: '6c940cb8-1a3e-43bf-a1f9-8acff2793def'
-                    alias: 'TR094567'
-                    confirmation:
-                      confirmation_date: '2019-07-01T19:13:51.418Z'
-                      transfer_code: 'SIG982123'
-                      transfer_system:
-                        name: 'CMT'
-                        guid: '6dc6e864-4155-4d57-8c46-b9034f6d9ec1'
-                      confirmed_agent:
-                        latitude: 51.522830
-                        website: ""
-                        phone: "+44 20 7377 8855"
-                        address: "28 Tabernacle St, London EC2A 4DD, UK"
-                        longitude: -0.085530
-                        service : "cash-in, payout, payments"
-                        guid : "02cd4e89-e28a-4bf6-8179-3d85d03a5041"
-                        distance : 0.025623119261322588
-                        working_hours : "9:00AM-6:00PM"
-                        name : "Atlantis Art Materials"
-                created_receive:
-                  value:
-                    send_amount: 76.0
-                    destination:
-                      country_code: 'ITA'
-                      country_name: 'Italy'
-                      city_code: 'Lonigo'
-                      city_name: 'Lonigo'
-                    currency: 'USD'
-                    agent: 
-                      latitude: 51.522830
-                      website: ""
-                      phone: "+44 20 7377 8855"
-                      address: "28 Tabernacle St, London EC2A 4DD, UK"
-                      longitude: -0.085530
-                      service : "cash-in, payout, payments"
-                      guid : "02cd4e89-e28a-4bf6-8179-3d85d03a5041"
-                      distance : 0.025623119261322588
-                      working_hours : "9:00AM-6:00PM"
-                      name : "Atlantis Art Materials"
-                    details:
-                      name: 'CMT'
-                      guid: '6dc6e864-4155-4d57-8c46-b9034f6d9ec1'
-                      source_currency: 'USD'
-                      destination_currency: 'EUR'
-                      exchange_rate: 0.7271
-                      fee: 3
-                      send_amount: 76.0
-                      total_send_amount: 79.0
-                      total_receive_amount: 55.2596
-                    sender:
-                      name: 'Jhon Smith'
-                      country_code: 'ITA'
-                      city_name: 'Rome'
-                      id: 'a531b9f3-822d-4817-9641-f628a984d1aa'
-                      is_user: true
-                      phone: '37369000002'
-                    id: 'b0b9b50e-40a9-4c9b-be65-afe655be86d1'
-                    alias: 'TR739274'
-                receive_confirmed:
-                  value:
-                    send_amount: 76.0
-                    destination:
-                      country_code: 'ITA'
-                      country_name: 'Italy'
-                      city_code: 'Lonigo'
-                      city_name: 'Lonigo'
-                    currency: 'USD'
-                    agent: 
-                      latitude: 51.522830
-                      website: ""
-                      phone: "+44 20 7377 8855"
-                      address: "28 Tabernacle St, London EC2A 4DD, UK"
-                      longitude: -0.085530
-                      service : "cash-in, payout, payments"
-                      guid : "02cd4e89-e28a-4bf6-8179-3d85d03a5041"
-                      distance : 0.025623119261322588
-                      working_hours : "9:00AM-6:00PM"
-                      name : "Atlantis Art Materials"
-                    details:
-                      name: 'CMT'
-                      guid: '6dc6e864-4155-4d57-8c46-b9034f6d9ec1'
-                      source_currency: 'USD'
-                      destination_currency: 'EUR'
-                      exchange_rate: 0.7271
-                      fee: 3
-                      send_amount: 76.0
-                      total_send_amount: 79.0
-                      total_receive_amount: 55.2596
-                    sender:
-                      name: 'Jhon Smith'
-                      country_code: 'ITA'
-                      city_name: 'Rome'
-                      id: 'a531b9f3-822d-4817-9641-f628a984d1aa'
-                      is_user: true
-                      phone: '37369000002'
-                    id: 'b0b9b50e-40a9-4c9b-be65-afe655be86d1'
-                    alias: 'TR739274'
-                    confirmation:
-                      confirmation_date: '2019-07-02T04:10:22.502Z'
-                      transfer_code: 'SIG982123'
-                      transfer_system:
-                        name: 'CMT'
-                        guid: '6dc6e864-4155-4d57-8c46-b9034f6d9ec1'
-                      confirmed_agent:
-                        latitude: 51.522830
-                        website: ""
-                        phone: "+44 20 7377 8855"
-                        address: "28 Tabernacle St, London EC2A 4DD, UK"
-                        longitude: -0.085530
-                        service : "cash-in, payout, payments"
-                        guid : "02cd4e89-e28a-4bf6-8179-3d85d03a5041"
-                        distance : 0.025623119261322588
-                        working_hours : "9:00AM-6:00PM"
-                        name : "Atlantis Art Materials"
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-        500:
-          $ref: '#/components/responses/SomethingWrong'
-        default:
-          $ref: '#/components/responses/SomethingWrong'
-      
-    
+          $ref: "#/components/responses/something_wrong"
 components:
   securitySchemes:
     authentication:
       type: http
       scheme: basic
-      
   responses:
-    UnauthorizedError:
+    unauthorized_error:
       description: Authentication information is missing or invalid
       headers:
         WWW_Authenticate:
           schema:
             type: string
-    SomethingWrong:
+    something_wrong:
       description: Something went wrong
       content:
-        application/json: 
+        application/json:
           schema:
             type: object
             properties:
@@ -958,331 +143,388 @@ components:
                 type: string
           examples:
             expected:
-              value: 
-                error: "<error reason>" 
+              value:
+                error: "<error reason>"
                 error_code: <some error code>
-    
   schemas:
-    user:
+    customer_basic_profile:
       required:
+        - id
+        - login
         - firstname
         - lastname
-        - email
-        - password
         - birthdate
-        - gender
+        - email
+        - personal_number
         - phone
+        - gender
       properties:
+        id:
+          type: string
+          format: uuid
+          example: 16f7b78a-5b1f-47a2-9502-162b317f302f
         firstname:
           description: The user first name
           type: string
+          example: John
         lastname:
           description: The user last name
           type: string
+          example: Doe
         email:
           description: The user mail
           type: string
           format: email
-        birthdate:
-          description: The user birth date
-          type: string
-          format: date
-        gender:
-          description: The user gender
-          type: string
-          enum: [male, female]
+          example: john.doe@gmail.com
         phone:
           description: The user phone
           type: string
           format: phone
-    user_full:
+          example: "+44 20 7377 8855"
+        birthdate:
+          description: The user birth date
+          type: string
+          format: date
+          example: "1970-01-01"
+        gender:
+          description: The user gender
+          type: string
+          enum:
+            - male
+            - female
+          example: male
+
+    id_document_type:
       allOf:
-        - $ref: '#/components/schemas/user'
+        - $ref: "#/components/schemas/identifiable_record"
+      properties:
+        id:
+          example: 6bbfed96-75e3-40b8-a620-0d2524638c9e
+        code:
+          description: Identification document code
+          example: NAT
+        name:
+          description: Identification document name
+          example: National ID
+
+    customer_full_profile:
+      allOf:
+        - $ref: "#/components/schemas/customer_basic_profile"
         - type: object
           properties:
-            document_type:
-              description: User document type
+            personal_number:
+              description: Social/National/Insurance number
               type: string
-            document:
-              description: User document
+              example: SN1998398754
+            id_document_type:
+              $ref: "#/components/schemas/id_document_type"
+            id_document_number:
+              description: Identification document number
               type: string
-        
-    advertising:
-      required: 
-        - type
-        - url
-        - image_url
+              example: AB1299734
+            location:
+              description: Customer resident city
+              allOf:
+                - $ref: "#/components/schemas/city"
+
+    identifiable_record:
+      required:
+        - id
+        - name
+        - code
       properties:
-        type:
-          description: Advertising type
+        id:
           type: string
-          enum: [browser, container]
-        url:
-          description: Advertising url
+          format: uuid
+          example: df697a99-634d-4ed7-9fdc-ef8cfb12278e
+        code:
           type: string
-          format: url
-        image_url:
-          description: Advertising image url
+        name:
           type: string
-          format: url
-        header:
-          description: Advertising header, for container type only
-          type: string
+
+    amount:
+      type: number
+      format: double
+      example: 10.0
+
+    currency_code:
+      type: string
+      pattern: "^[A-Z]{3}$"
+      example: USD
+
+    country:
+      allOf:
+        - $ref: "#/components/schemas/identifiable_record"
+        - type: object
+          properties:
+            id:
+              example: 19241586-e09a-4cda-9a34-31561f8097e1
+            code:
+              description: Country code
+              example: ITA
+            name:
+              description: Country name
+              example: Italy
+
+    city:
+      allOf:
+        - $ref: "#/components/schemas/identifiable_record"
+        - type: object
+          properties:
+            id:
+              example: f3d7a372-dcb9-4f86-b6d3-3639e4a70a4b
+            code:
+              description: City code
+              example: LN
+            name:
+              description: City name
+              example: Lonigo
+            country:
+              $ref: "#/components/schemas/country"
+
     agent:
       required:
-        - latitude
-        - longitude
-        - distance
-        - guid
+        - id
         - name
         - address
         - phone
         - working_hours
+        - latitude
+        - longitude
+        - distance
       properties:
+        id:
+          type: string
+          format: uuid
+          example: 014d81df-ff4b-4580-9adf-a7379e888caa
+        name:
+          description: Agent name
+          type: string
+          example: Atlantis Art Materials
+        address:
+          description: Agent address
+          type: string
+          example: 28 Tabernacle St, London EC2A 4DD, UK
+        phone:
+          description: Agent phone
+          type: string
+          format: phone
+          example: +44 20 7377 8855
         latitude:
           description: Latitude
           type: number
           format: double
+          example: 51.522830
         longitude:
           description: Longitude
           type: number
-          format: double 
-        name:
-          description: Agent name
-          type: string
-        address:
-          description: Agent address
-          type: string
-        phone: 
-          description: Agent phone
-          type: string
-          format: phone
+          format: double
+          example: -0.085530
         website:
           description: Agent website
           type: string
           format: url
-        working_hours:
-          description: Agent working hours
-          type: object
-          properties:
-            timeFrom:
-              description: Agent from working hours
-              type: string
-            timeUntil:
-              description: Agent untill working hours
-              type: string
-        guid:
-          description: Agent guid
-          type: string
-          format: guid
+          example: http://tango.md
         distance:
           description: Distance to agent
           type: number
           format: double
+          example: 0.025623119261322588
         service:
-          type: array
-          uniqueItems: true
-          items:
-            type: string
-            enum: [cash-in, payout, payments]
-    report:
-        required:
-          - amount
-          - execution_date
-          - operation_id
-          - type
-          - currency
-        properties:
-          amount:
-            description: Operation amount
-            type: number
-            format: float
-          execution_date:
-            description: Execution date
-            type: string
-            format: date-time
-          operation_id:
-            description: Operation id
-            type: string
-            format: guid
-          correspondent_firstname:
-            description: Correspondent first name
-            type: string
-          correspondent_lastname:
-            description: Correspondent last name
-            type: string
-          type:
-            description: Operation type
-            type: string
-            enum: [transfer, payout, payment]
-          currency:
-            description: Operation currency code
-            type: string
-            pattern: '^[A-Z]{3}$'
-          fee_currency:
-            description: Operation fee currency code
-            type: string
-            pattern: '^[A-Z]{3}$'
-          fee:
-            description: Operation fee amount
-            type: number
-            format: float
-          payment_destination:
-            description: Payment destination
-            type: string
-            
-    location:
-      required:
-        - country_code
-        - country_name
-        - city_code
-        - city_name
+          description: Services provided by Agent
+          type: string
+          example: transfer, payout, payment
+        working_hours:
+          description: Agent working hours. Defined as simple string, but should be implemented as complex object with week days and from and to fields.
+          type: string
+          example: 9:00AM-6:00PM
+
+    operation_type:
+      type: string
+      description: Operation type
+      enum:
+        - transfer
+        - payout
+        - payment
+
+    operation_status:
+      type: string
+      description: Set of common operation states
+      enum:
+        - created
+        - executed
+        - canceled
+
+    opeartion_summary:
       properties:
-        country_code:
-          description: Location country code
+        executed:
           type: string
-        country_name:
-          description: Location country name
+          format: date-time
+        executed_agent:
+          allOf:
+            - $ref: "#/components/schemas/agent"
+          description: Agent that executed the operation
+        code:
           type: string
-        city_code:
-          description: Location city code
-          type: string
-        city_name:
-          description: Location city name
-          type: string
-        state:
-          description: Location state name
-          type: string
-          
-    payment_tunnel:
+          description: Code assigned to the operation on successful execution. Usually it comdes from external system (eg. Money Transfer System)
+          example: FT23098230757
+
+    operation:
       required:
+        - id
+        - alias
+        - type
+        - status
+        - created
+        - modified
+        - is_finalized
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 49b63448-650d-4e33-a5a6-d7258724d618
+        alias:
+          description: Human-friendly opeartion alternative name suitalbe for reference to share with others and for manual search
+          type: string
+          example: QSC2774402
+        type:
+          $ref: "#/components/schemas/operation_type"
+        status:
+          $ref: "#/components/schemas/operation_status"
+        created:
+          type: string
+          format: date-time
+        modified:
+          type: string
+          format: date-time
+        is_finalized:
+          type: boolean
+          default: false
+        prefered_agent:
+          $ref: "#/components/schemas/agent"
+        summary:
+          allOf:
+            - $ref: "#/components/schemas/opeartion_summary"
+          description: Execution summary of the operation. For future use could include additional fields.
+
+    organization:
+      allOf:
+        - $ref: "#/components/schemas/identifiable_record"
+        - type: object
+          properties:
+            id:
+              example: ade01139-965e-4b4d-8128-cfa5ccf9ac3e
+            code:
+              description: Organization short name (code, optional)
+              example: SMT
+            name:
+              description: Organization name
+              example: Sigue Money Transfer
+
+    transfer_contract:
+      description: Proposal details from a certain organization for the requested transfer.
+      required:
+        - id
         - name
-        - guid
-        - source_currency
-        - destination_currency
-        - exchange_rate
-        - fee
         - send_amount
+        - send_currency
+        - receive_amount
+        - receive_currency
+        - exchange_rate
+        - fee_amount
         - total_send_amount
         - total_receive_amount
       properties:
+        id:
+          type: string
+          format: uuid
+          example: ff530c93-c7d5-46b9-ad66-88706003aded
         name:
-          description: Organization name
+          description: Tunnel name
           type: string
-        guid:
-          description: Tunnel GUID for unique organization and currency combination
-          type: string
-        source_currency:
-          description: Source currency code
-          type: string
-          pattern: '^[A-Z]{3}$'
-        destination_currency:
-          description: Destination currency code
-          type: string
-          pattern: '^[A-Z]{3}$'
-        exchange_rate: 
+          example: SIG ITA EUR
+        organization:
+          $ref: "#/components/schemas/organization"
+        send_amount:
+          allOf:
+            - $ref: "#/components/schemas/amount"
+          description: Amount in source currency to send
+          example: 100.0
+        send_currency:
+          allOf:
+            - $ref: "#/components/schemas/currency_code"
+          description: Currency code of amount to send
+          example: USD
+        receive_amount:
+          description: Destination amount paid to receiver
+          allOf:
+            - $ref: "#/components/schemas/amount"
+          example: 72.71
+        receive_currency:
+          description: Destination currency code of amount paid to receiver
+          allOf:
+            - $ref: "#/components/schemas/currency_code"
+          example: EUR
+        exchange_rate:
           description: Exchange rate
           type: number
           format: float
-        fee:
+          example: 0.7271
+        fee_amount:
           description: Fee amount in source currency
-          type: number
-          format: float
-        send_amount:
-          description: Amount in source currency to send
-          type: number
-          format: float
+          allOf:
+            - $ref: "#/components/schemas/amount"
+          example: 1.5
         total_send_amount:
           description: Total amount in source currency to pay including fee
-          type: number
-          format: float
-        total_receive_amount:
-          description: Expected amount in destianation currency
-          type: number
-          format: float
-          
-    correspondent:
-      required:
-       - name
-       - country_code
-       - is_user
-       - city_name
-       - id
-      properties:
-        name:
-          description: Full correspondent name
-          type: string
-        country_code: 
-          description: Correspondent country code
-          type: string
-        city_name:
-          description: Correspondent city name
-          type: string
-        id:
-          description: Correspondent unique id
-          type: string
-        is_user:
-          description: Indicates if correspondent was auto generated from existing users through phone book search
-          type: boolean
-        phone: 
-          description: Correspondent phone (available if correspondent was autogenerated)
-          type: string
-          format: phone
-          
+          allOf:
+            - $ref: "#/components/schemas/amount"
+          example: 101.5
+
     transfer:
-      required:
-        - send_amount
-        - currency
-        - destination
-        - details
-        - id
-        - alias
-      properties:
-        send_amount:
-          description: Amount in source currency to send
-          type: number
-          format: float
-        destination:
-          $ref: '#/components/schemas/location'
-        currency:
-          description: Send currency code
-          type: string
-          pattern: '^[A-Z]{3}$'
-        agent: 
-          $ref: '#/components/schemas/agent'
-        details:
-          $ref: '#/components/schemas/payment_tunnel'
-        sender:
-          $ref: '#/components/schemas/correspondent'
-        receiver:
-          $ref: '#/components/schemas/correspondent'
-        id:
-          description: Internal transfer guid.
-          type: string
-        alias:
-          description: Human readable transfer identifier for search and human input.
-          type: string
-        confirmation:
+      allOf:
+        - $ref: "#/components/schemas/operation"
+        - type: object
           required:
-            - confirmation_date
+            - amount
+            - currency
+            - destination
+            - sender
+            - receiver
           properties:
-            confirmation_date:
-              description: 'Date of transfer agent confirmation'
-              type: string
-              format: date
-            transfer_code:
-              description: 'External transfer system operation code'
-              type: string
-            transfer_system:
-              properties:
-                name:
-                  description: 'Transfer system name'
-                  type: string
-                guid:
-                  description: 'Transfer system guid'
-                  type: string
-            confirmed_agent: 
-              $ref: '#/components/schemas/agent'
-        
-security:
-  - authentication: []
+            type:
+              default: transfer
+            amount:
+              description: Amount to send
+              allOf:
+                - $ref: "#/components/schemas/amount"
+              example: 100.0
+            currency:
+              allOf:
+                - $ref: "#/components/schemas/currency_code"
+              description: Currency code of the operation
+              example: USD
+            destination:
+              description: Destination city where to send money
+              allOf:
+                - $ref: "#/components/schemas/city"
+            sender:
+              $ref: "#/components/schemas/customer_full_profile"
+            receiver:
+              allOf:
+                - $ref: "#/components/schemas/customer_full_profile"
+              example:
+                id: df9d59bc-a237-4972-9b09-08ffdc01a399
+                firstname: Jane
+                lastname: Doe
+                phone: "+44 20 1311 7711"
+                location:
+                  id: f3d7a372-dcb9-4f86-b6d3-3639e4a70a4b
+                  code: LN
+                  name: Lonigo
+                  country:
+                    id: 19241586-e09a-4cda-9a34-31561f8097e1
+                    code: ITA
+                    name: Italy
+            contract:
+              $ref: "#/components/schemas/transfer_contract"
