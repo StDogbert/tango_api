@@ -193,7 +193,6 @@ components:
             - male
             - female
           example: male
-
     id_document_type:
       allOf:
         - $ref: "#/components/schemas/identifiable_record"
@@ -206,7 +205,6 @@ components:
         name:
           description: Identification document name
           example: National ID
-
     customer_full_profile:
       allOf:
         - $ref: "#/components/schemas/customer_basic_profile"
@@ -226,7 +224,6 @@ components:
               description: Customer resident city
               allOf:
                 - $ref: "#/components/schemas/city"
-
     identifiable_record:
       required:
         - id
@@ -241,17 +238,14 @@ components:
           type: string
         name:
           type: string
-
     amount:
       type: number
       format: double
       example: 10.0
-
     currency_code:
       type: string
       pattern: "^[A-Z]{3}$"
       example: USD
-
     country:
       allOf:
         - $ref: "#/components/schemas/identifiable_record"
@@ -265,7 +259,6 @@ components:
             name:
               description: Country name
               example: Italy
-
     city:
       allOf:
         - $ref: "#/components/schemas/identifiable_record"
@@ -281,7 +274,6 @@ components:
               example: Lonigo
             country:
               $ref: "#/components/schemas/country"
-
     agent:
       required:
         - id
@@ -338,7 +330,6 @@ components:
           description: Agent working hours. Defined as simple string, but should be implemented as complex object with week days and from and to fields.
           type: string
           example: 9:00AM-6:00PM
-
     operation_type:
       type: string
       description: Operation type
@@ -346,7 +337,6 @@ components:
         - transfer
         - payout
         - payment
-
     operation_status:
       type: string
       description: Set of common operation states
@@ -354,7 +344,6 @@ components:
         - created
         - executed
         - canceled
-
     opeartion_summary:
       properties:
         executed:
@@ -368,7 +357,6 @@ components:
           type: string
           description: Code assigned to the operation on successful execution. Usually it comdes from external system (eg. Money Transfer System)
           example: FT23098230757
-
     operation:
       required:
         - id
@@ -406,7 +394,6 @@ components:
           allOf:
             - $ref: "#/components/schemas/opeartion_summary"
           description: Execution summary of the operation. For future use could include additional fields.
-
     organization:
       allOf:
         - $ref: "#/components/schemas/identifiable_record"
@@ -420,7 +407,6 @@ components:
             name:
               description: Organization name
               example: Sigue Money Transfer
-
     transfer_contract:
       description: Proposal details from a certain organization for the requested transfer.
       required:
@@ -480,7 +466,6 @@ components:
           allOf:
             - $ref: "#/components/schemas/amount"
           example: 101.5
-
     transfer:
       allOf:
         - $ref: "#/components/schemas/operation"
@@ -492,8 +477,6 @@ components:
             - sender
             - receiver
           properties:
-            type:
-              default: transfer
             amount:
               description: Amount to send
               allOf:
