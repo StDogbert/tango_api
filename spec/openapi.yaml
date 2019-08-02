@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 1.10.0
+  version: 1.11.0
   title: Tango API
   description: This is a sample for Tango API
 tags:
@@ -33,6 +33,14 @@ paths:
             type: string
             pattern: "^[A-Z]{3}$"
             example: usd
+        - in: query
+          name: receiver[id]
+          description: Transfer receiver
+          required: false
+          schema:
+            type: string
+            format: uuid
+            example: 'df9d59bc-a237-4972-9b09-08ffdc01a399'
         - in: query
           name: destination[id]
           description: Destination location
