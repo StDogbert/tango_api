@@ -426,7 +426,7 @@ paths:
                     status: created
                     created: '2019-08-05T08:57:59.375Z'
                     modified: '2019-08-05T08:57:59.375Z'
-                    is_finalized: false
+                    is_finalized: true
                     prefered_agent:
                       id: 014d81df-ff4b-4580-9adf-a7379e888caa
                       name: Atlantis Art Materials
