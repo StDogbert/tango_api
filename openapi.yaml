@@ -1,11 +1,16 @@
 openapi: 3.0.0
 info:
-  version: 1.12.0
+  version: 1.13.0
   title: Tango API
   description: This is a sample for Tango API
 tags:
   - name: Transfers
     description: Transfers
+    externalDocs:
+      description: Find out more
+      url: 'http://tango.md'
+  - name: Operations
+    description: Operations
     externalDocs:
       description: Find out more
       url: 'http://tango.md'
@@ -161,22 +166,22 @@ paths:
           $ref: '#/components/responses/something_wrong'
         default:
           $ref: '#/components/responses/something_wrong'
-  '/transfer/{transfer_id}':
+  '/operation/{operation_id}':
     get:
       tags:
-        - transfers
-      summary: Validate transfer
-      description: Search existing transfer
+        - operations
+      summary: Validate operation
+      description: Search existing operation
       parameters:
         - in: path
-          name: transfer_id
+          name: operation_id
           required: true
           schema:
             type: string
           example: 6c940cb8-1a3e-43bf-a1f9-8acff2793def
       responses:
         '200':
-          description: Transfer exists
+          description: Operation exists
           content:
             application/json:
               schema:
