@@ -97,7 +97,7 @@
               },
               "examples": {
                 "full": {
-                  "summary": "Full infor request example",
+                  "summary": "Full info request example",
                   "value": {
                     "preffered_agent": {
                       "id": "014d81df-ff4b-4580-9adf-a7379e888caa"
@@ -254,7 +254,7 @@
                   "$ref": "#/components/schemas/transfer"
                 },
                 "examples": {
-                  "minimal_send": {
+                  "minimal_transfer": {
                     "value": {
                       "id": "49b63448-650d-4e33-a5a6-d7258724d618",
                       "alias": "QSC2774402",
@@ -281,7 +281,7 @@
                       }
                     }
                   },
-                  "created_send": {
+                  "created_transfer": {
                     "value": {
                       "id": "49b63448-650d-4e33-a5a6-d7258724d618",
                       "alias": "QSC2774402",
@@ -364,7 +364,7 @@
                       }
                     }
                   },
-                  "confirmed_send": {
+                  "confirmed_transfer": {
                     "value": {
                       "id": "49b63448-650d-4e33-a5a6-d7258724d618",
                       "alias": "QSC2774402",
