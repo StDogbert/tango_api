@@ -372,6 +372,7 @@ paths:
                     created: '2019-08-05T08:57:59.375Z'
                     modified: '2019-08-05T08:57:59.375Z'
                     is_finalized: false
+                    code: FT23098230757
                     prefered_agent:
                       id: 014d81df-ff4b-4580-9adf-a7379e888caa
                       name: Atlantis Art Materials
@@ -427,6 +428,7 @@ paths:
                     created: '2019-08-05T08:57:59.375Z'
                     modified: '2019-08-05T08:57:59.375Z'
                     is_finalized: true
+                    code: FT23098230757
                     prefered_agent:
                       id: 014d81df-ff4b-4580-9adf-a7379e888caa
                       name: Atlantis Art Materials
@@ -852,6 +854,10 @@ components:
                 - $ref: '#/components/schemas/currency_code'
               description: Currency code of the operation
               example: USD
+            code:
+              type: string
+              description: Code assigned to the operation on successful execution. Usually it comdes from external system (eg. Money Transfer System)
+              example: FT23098230757
             destination:
               description: Destination city where to send money
               allOf:
