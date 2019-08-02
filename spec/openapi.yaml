@@ -171,7 +171,7 @@ paths:
   /operation/{operation_id}:
     get:
       tags:
-        - operations
+        - Operations
       summary: Validate operation
       description: 'Search existing operation'
       parameters:
