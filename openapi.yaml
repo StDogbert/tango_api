@@ -20,7 +20,7 @@ paths:
         - in: query
           name: amount
           description: Send amount
-          required: true
+          required: false
           schema:
             type: number
             format: double
@@ -28,7 +28,7 @@ paths:
         - in: query
           name: currency
           description: Send currency
-          required: true
+          required: false
           schema:
             type: string
             pattern: '^[A-Z]{3}$'
@@ -36,17 +36,39 @@ paths:
         - in: query
           name: 'destination[id]'
           description: Destination location
-          required: true
+          required: false
           schema:
             type: string
             format: uuid
             example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        - in: query
+          name: 'contract[id]'
+          description: 'Contract with system, rate and fee'
+          required: false
+          schema:
+            type: string
+            format: uuid
+            example: ff530c93-c7d5-46b9-ad66-88706003aded
       requestBody:
         required: false
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/transfer'
+            examples:
+              full:
+                summary: Full infor request example
+                value:
+                  preffered_agent:
+                    id: 014d81df-ff4b-4580-9adf-a7379e888caa
+                  amount: 76
+                  currency: USD
+                  destination:
+                    id: f3d7a372-dcb9-4f86-b6d3-3639e4a70a4b
+                  receiver:
+                    id: df9d59bc-a237-4972-9b09-08ffdc01a399
+                  contract:
+                    id: ff530c93-c7d5-46b9-ad66-88706003aded
       responses:
         '200':
           description: OK
@@ -54,6 +76,77 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/transfer'
+              examples:
+                full:
+                  value:
+                    id: 49b63448-650d-4e33-a5a6-d7258724d618
+                    alias: QSC2774402
+                    type: transfer
+                    status: created
+                    created: '2019-08-02T08:57:59.375Z'
+                    modified: '2019-08-02T08:57:59.375Z'
+                    is_finalized: false
+                    prefered_agent:
+                      id: 014d81df-ff4b-4580-9adf-a7379e888caa
+                      name: Atlantis Art Materials
+                      address: '28 Tabernacle St, London EC2A 4DD, UK'
+                      phone: +44 20 7377 8855
+                      latitude: 51.52283
+                      longitude: -0.08553
+                      website: 'http://tango.md'
+                      distance: 0.02562311926132259
+                      service: 'transfer, payout, payment'
+                      working_hours: '9:00AM-6:00PM'
+                    amount: 100
+                    currency: USD
+                    destination:
+                      id: f3d7a372-dcb9-4f86-b6d3-3639e4a70a4b
+                      code: LN
+                      name: Lonigo
+                      country:
+                        id: 19241586-e09a-4cda-9a34-31561f8097e1
+                        code: ITA
+                        name: Italy
+                    sender:
+                      id: 16f7b78a-5b1f-47a2-9502-162b317f302f
+                      firstname: John
+                      lastname: Doe
+                      phone: +44 20 7377 8855
+                      location:
+                        id: f3d7a372-dcb9-4f86-b6d3-3639e4a70a4b
+                        code: LN
+                        name: Lonigo
+                        country:
+                          id: 19241586-e09a-4cda-9a34-31561f8097e1
+                          code: ITA
+                          name: Italy
+                    receiver:
+                      id: df9d59bc-a237-4972-9b09-08ffdc01a399
+                      firstname: Jane
+                      lastname: Doe
+                      phone: +44 20 1311 7711
+                      location:
+                        id: f3d7a372-dcb9-4f86-b6d3-3639e4a70a4b
+                        code: LN
+                        name: Lonigo
+                        country:
+                          id: 19241586-e09a-4cda-9a34-31561f8097e1
+                          code: ITA
+                          name: Italy
+                    contract:
+                      id: ff530c93-c7d5-46b9-ad66-88706003aded
+                      name: SIG ITA EUR
+                      organization:
+                        id: ade01139-965e-4b4d-8128-cfa5ccf9ac3e
+                        code: SMT
+                        name: Sigue Money Transfer
+                      send_amount: 100
+                      send_currency: USD
+                      receive_amount: 72.71
+                      receive_currency: EUR
+                      exchange_rate: 0.7271
+                      fee_amount: 1.5
+                      total_send_amount: 101.5
         '401':
           $ref: '#/components/responses/unauthorized_error'
         '500':
