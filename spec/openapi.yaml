@@ -168,7 +168,7 @@ paths:
         default:
           $ref: "#/components/responses/something_wrong"
 
-  /operation/{operation_id}:
+  /operations/{operation_id}:
     get:
       tags:
         - Operations
