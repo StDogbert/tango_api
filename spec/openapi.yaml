@@ -20,7 +20,7 @@ paths:
         - in: query
           name: amount
           description: Send amount
-          required: true
+          required: false
           schema:
             type: number
             format: double
@@ -28,7 +28,7 @@ paths:
         - in: query
           name: currency
           description: Send currency
-          required: true
+          required: false
           schema:
             type: string
             pattern: "^[A-Z]{3}$"
@@ -36,35 +36,40 @@ paths:
         - in: query
           name: destination[id]
           description: Destination location
-          required: true
+          required: false
           schema:
             type: string
             format: uuid
-            example: d290f1ee-6c54-4b01-90e6-d701748f0851
+            example: 'd290f1ee-6c54-4b01-90e6-d701748f0851'
+        - in: query
+          name: contract[id]
+          description: Contract with system, rate and fee
+          required: false
+          schema:
+            type: string
+            format: uuid
+            example: 'ff530c93-c7d5-46b9-ad66-88706003aded'
       requestBody:
         required: false
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/transfer"
-            # examples:
-            #   valid:
-            #     summary: Valid request example
-            #     value:
-            #       amount: 76.0
-            #       destination:
-            #         country_code: 'ITA'
-            #         country_name: 'Italy'
-            #         city_code: 'Lonigo'
-            #         city_name: 'Lonigo'
-            #       currency: 'USD'
-            #       details:
-            #         guid: '6dc6e864-4155-4d57-8c46-b9034f6d9ec1'
-            #         amount: 76.0
-            #       receiver:
-            #         id: '12419fe5-2771-4212-bbaf-ab626bb11d03'
-            #       agent:
-            #         guid: '02cd4e89-e28a-4bf6-8179-3d85d03a5041'
+            examples:
+              full:
+                summary: Full infor request example
+                value:
+                  preffered_agent:
+                    id: '014d81df-ff4b-4580-9adf-a7379e888caa'
+                  amount: 76.0
+                  currency: 'USD'
+                  destination:
+                    id: 'f3d7a372-dcb9-4f86-b6d3-3639e4a70a4b'
+                  receiver:
+                    id: 'df9d59bc-a237-4972-9b09-08ffdc01a399'
+                  contract:
+                    id: 'ff530c93-c7d5-46b9-ad66-88706003aded'  
+                  
       responses:
         200:
           description: OK
@@ -72,47 +77,78 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/transfer"
-              # examples:
-              #   expected:
-              #     value:
-              #       amount: 76.0
-              #       destination:
-              #         country_code: 'ITA'
-              #         country_name: 'Italy'
-              #         city_code: 'Lonigo'
-              #         city_name: 'Lonigo'
-              #       currency: 'USD'
-              #       agent:
-              #         latitude: 51.522830
-              #         website: ""
-              #         phone: "+44 20 7377 8855"
-              #         address: "28 Tabernacle St, London EC2A 4DD, UK"
-              #         longitude: -0.085530
-              #         service : "cash-in, payout, payments"
-              #         guid : "02cd4e89-e28a-4bf6-8179-3d85d03a5041"
-              #         distance : 0.025623119261322588
-              #         working_hours : "9:00AM-6:00PM"
-              #         name : "Atlantis Art Materials"
-              #       details:
-              #         name: 'CMT'
-              #         guid: '6dc6e864-4155-4d57-8c46-b9034f6d9ec1'
-              #         send_currency: 'USD'
-              #         receive_currency: 'EUR'
-              #         exchange_rate: 0.7271
-              #         fee_amount: 3
-              #         amount: 76.0
-              #         total_amount: 79.0
-              #         total_receive_amount: 55.2596
-              #       receiver:
-              #         name: 'Piter Banner'
-              #         country_code: 'MDA'
-              #         city_name: 'Kishinev'
-              #         id: '12419fe5-2771-4212-bbaf-ab626bb11d03'
-              #         is_user: true
-              #         phone: '37369000002'
-              #       id: '6c940cb8-1a3e-43bf-a1f9-8acff2793def'
-              #       code: 'TR094567'
-        "401":
+              examples:
+                full:
+                  value:
+                    id: '49b63448-650d-4e33-a5a6-d7258724d618'
+                    alias: 'QSC2774402'
+                    type: 'transfer'
+                    status: 'created'
+                    created: '2019-08-02T08:57:59.375Z'
+                    modified: '2019-08-02T08:57:59.375Z'
+                    is_finalized: false
+                    prefered_agent:
+                      id: '014d81df-ff4b-4580-9adf-a7379e888caa'
+                      name: 'Atlantis Art Materials'
+                      address: '28 Tabernacle St, London EC2A 4DD, UK'
+                      phone: "+44 20 7377 8855"
+                      latitude: 51.52283
+                      longitude: -0.08553
+                      website: 'http://tango.md'
+                      distance: 0.02562311926132259
+                      service: 'transfer, payout, payment'
+                      working_hours: '9:00AM-6:00PM'
+                    amount: 100
+                    currency: 'USD'
+                    destination:
+                      id: 'f3d7a372-dcb9-4f86-b6d3-3639e4a70a4b'
+                      code: 'LN'
+                      name: 'Lonigo'
+                      country:
+                        id: '19241586-e09a-4cda-9a34-31561f8097e1'
+                        code: 'ITA'
+                        name: 'Italy'
+                    sender:
+                      id: '16f7b78a-5b1f-47a2-9502-162b317f302f'
+                      firstname: 'John'
+                      lastname: 'Doe'
+                      phone: "+44 20 7377 8855"
+                      location:
+                        id: 'f3d7a372-dcb9-4f86-b6d3-3639e4a70a4b'
+                        code: 'LN'
+                        name: 'Lonigo'
+                        country:
+                          id: '19241586-e09a-4cda-9a34-31561f8097e1'
+                          code: 'ITA'
+                          name: 'Italy'
+                    receiver:
+                      id: 'df9d59bc-a237-4972-9b09-08ffdc01a399'
+                      firstname: 'Jane'
+                      lastname: 'Doe'
+                      phone: "+44 20 1311 7711"
+                      location:
+                        id: 'f3d7a372-dcb9-4f86-b6d3-3639e4a70a4b'
+                        code: 'LN'
+                        name: 'Lonigo'
+                        country:
+                          id: '19241586-e09a-4cda-9a34-31561f8097e1'
+                          code: 'ITA'
+                          name: 'Italy'
+                    contract:
+                      id: 'ff530c93-c7d5-46b9-ad66-88706003aded'
+                      name: 'SIG ITA EUR'
+                      organization:
+                        id: 'ade01139-965e-4b4d-8128-cfa5ccf9ac3e'
+                        code: 'SMT'
+                        name: 'Sigue Money Transfer'
+                      send_amount: 100
+                      send_currency: 'USD'
+                      receive_amount: 72.71
+                      receive_currency: 'EUR'
+                      exchange_rate: 0.7271
+                      fee_amount: 1.5
+                      total_send_amount: 101.5
+        401:
           $ref: "#/components/responses/unauthorized_error"
         500:
           $ref: "#/components/responses/something_wrong"
@@ -162,7 +198,7 @@ components:
         id:
           type: string
           format: uuid
-          example: 16f7b78a-5b1f-47a2-9502-162b317f302f
+          example: '16f7b78a-5b1f-47a2-9502-162b317f302f'
         firstname:
           description: The user first name
           type: string
@@ -198,13 +234,13 @@ components:
         - $ref: "#/components/schemas/identifiable_record"
       properties:
         id:
-          example: 6bbfed96-75e3-40b8-a620-0d2524638c9e
+          example: '6bbfed96-75e3-40b8-a620-0d2524638c9e'
         code:
           description: Identification document code
-          example: NAT
+          example: 'NAT'
         name:
           description: Identification document name
-          example: National ID
+          example: 'National ID'
     customer_full_profile:
       allOf:
         - $ref: "#/components/schemas/customer_basic_profile"
@@ -213,13 +249,13 @@ components:
             personal_number:
               description: Social/National/Insurance number
               type: string
-              example: SN1998398754
+              example: 'SN1998398754'
             id_document_type:
               $ref: "#/components/schemas/id_document_type"
             id_document_number:
               description: Identification document number
               type: string
-              example: AB1299734
+              example: 'AB1299734'
             location:
               description: Customer resident city
               allOf:
@@ -233,7 +269,7 @@ components:
         id:
           type: string
           format: uuid
-          example: df697a99-634d-4ed7-9fdc-ef8cfb12278e
+          example: 'df697a99-634d-4ed7-9fdc-ef8cfb12278e'
         code:
           type: string
         name:
@@ -252,26 +288,26 @@ components:
         - type: object
           properties:
             id:
-              example: 19241586-e09a-4cda-9a34-31561f8097e1
+              example: '19241586-e09a-4cda-9a34-31561f8097e1'
             code:
               description: Country code
-              example: ITA
+              example: 'ITA'
             name:
               description: Country name
-              example: Italy
+              example: 'Italy'
     city:
       allOf:
         - $ref: "#/components/schemas/identifiable_record"
         - type: object
           properties:
             id:
-              example: f3d7a372-dcb9-4f86-b6d3-3639e4a70a4b
+              example: 'f3d7a372-dcb9-4f86-b6d3-3639e4a70a4b'
             code:
               description: City code
-              example: LN
+              example: 'LN'
             name:
               description: City name
-              example: Lonigo
+              example: 'Lonigo'
             country:
               $ref: "#/components/schemas/country"
     agent:
@@ -288,20 +324,20 @@ components:
         id:
           type: string
           format: uuid
-          example: 014d81df-ff4b-4580-9adf-a7379e888caa
+          example: '014d81df-ff4b-4580-9adf-a7379e888caa'
         name:
           description: Agent name
           type: string
-          example: Atlantis Art Materials
+          example: 'Atlantis Art Materials'
         address:
           description: Agent address
           type: string
-          example: 28 Tabernacle St, London EC2A 4DD, UK
+          example: '28 Tabernacle St, London EC2A 4DD, UK'
         phone:
           description: Agent phone
           type: string
           format: phone
-          example: +44 20 7377 8855
+          example: '+44 20 7377 8855'
         latitude:
           description: Latitude
           type: number
@@ -316,7 +352,7 @@ components:
           description: Agent website
           type: string
           format: url
-          example: http://tango.md
+          example: 'http://tango.md'
         distance:
           description: Distance to agent
           type: number
@@ -325,11 +361,11 @@ components:
         service:
           description: Services provided by Agent
           type: string
-          example: transfer, payout, payment
+          example: 'transfer, payout, payment'
         working_hours:
           description: Agent working hours. Defined as simple string, but should be implemented as complex object with week days and from and to fields.
           type: string
-          example: 9:00AM-6:00PM
+          example: '9:00AM-6:00PM'
     operation_type:
       type: string
       description: Operation type
@@ -356,7 +392,7 @@ components:
         code:
           type: string
           description: Code assigned to the operation on successful execution. Usually it comdes from external system (eg. Money Transfer System)
-          example: FT23098230757
+          example: 'FT23098230757'
     operation:
       required:
         - id
@@ -370,11 +406,11 @@ components:
         id:
           type: string
           format: uuid
-          example: 49b63448-650d-4e33-a5a6-d7258724d618
+          example: '49b63448-650d-4e33-a5a6-d7258724d618'
         alias:
           description: Human-friendly opeartion alternative name suitalbe for reference to share with others and for manual search
           type: string
-          example: QSC2774402
+          example: 'QSC2774402'
         type:
           $ref: "#/components/schemas/operation_type"
         status:
@@ -400,13 +436,13 @@ components:
         - type: object
           properties:
             id:
-              example: ade01139-965e-4b4d-8128-cfa5ccf9ac3e
+              example: 'ade01139-965e-4b4d-8128-cfa5ccf9ac3e'
             code:
               description: Organization short name (code, optional)
-              example: SMT
+              example: 'SMT'
             name:
               description: Organization name
-              example: Sigue Money Transfer
+              example: 'Sigue Money Transfer'
     transfer_contract:
       description: Proposal details from a certain organization for the requested transfer.
       required:
@@ -424,11 +460,11 @@ components:
         id:
           type: string
           format: uuid
-          example: ff530c93-c7d5-46b9-ad66-88706003aded
+          example: 'ff530c93-c7d5-46b9-ad66-88706003aded'
         name:
           description: Tunnel name
           type: string
-          example: SIG ITA EUR
+          example: 'SIG ITA EUR'
         organization:
           $ref: "#/components/schemas/organization"
         send_amount:
@@ -440,7 +476,7 @@ components:
           allOf:
             - $ref: "#/components/schemas/currency_code"
           description: Currency code of amount to send
-          example: USD
+          example: 'USD'
         receive_amount:
           description: Destination amount paid to receiver
           allOf:
@@ -450,7 +486,7 @@ components:
           description: Destination currency code of amount paid to receiver
           allOf:
             - $ref: "#/components/schemas/currency_code"
-          example: EUR
+          example: 'EUR'
         exchange_rate:
           description: Exchange rate
           type: number
@@ -486,7 +522,7 @@ components:
               allOf:
                 - $ref: "#/components/schemas/currency_code"
               description: Currency code of the operation
-              example: USD
+              example: 'USD'
             destination:
               description: Destination city where to send money
               allOf:
@@ -497,17 +533,17 @@ components:
               allOf:
                 - $ref: "#/components/schemas/customer_full_profile"
               example:
-                id: df9d59bc-a237-4972-9b09-08ffdc01a399
-                firstname: Jane
-                lastname: Doe
+                id: 'df9d59bc-a237-4972-9b09-08ffdc01a399'
+                firstname: 'Jane'
+                lastname: 'Doe'
                 phone: "+44 20 1311 7711"
                 location:
-                  id: f3d7a372-dcb9-4f86-b6d3-3639e4a70a4b
-                  code: LN
-                  name: Lonigo
+                  id: 'f3d7a372-dcb9-4f86-b6d3-3639e4a70a4b'
+                  code: 'LN'
+                  name: 'Lonigo'
                   country:
-                    id: 19241586-e09a-4cda-9a34-31561f8097e1
-                    code: ITA
-                    name: Italy
+                    id: '19241586-e09a-4cda-9a34-31561f8097e1'
+                    code: 'ITA'
+                    name: 'Italy'
             contract:
               $ref: "#/components/schemas/transfer_contract"
