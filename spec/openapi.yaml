@@ -61,6 +61,28 @@ paths:
         default:
           $ref: '#/components/responses/SomethingWrong'
 
+  /agents:
+    get:
+      tags:
+        - Common
+      summary: Agents list
+      description: 'Get agents list'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json: 
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/agent'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          $ref: '#/components/responses/SomethingWrong'
+        default:
+          $ref: '#/components/responses/SomethingWrong' 
+
   /me:
     post:
       tags:
