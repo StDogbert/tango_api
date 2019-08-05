@@ -55,11 +55,11 @@ paths:
                       image_url: '<some image url 3>'
                       header:  '<some header 3>'
         401:
-          $ref: '#/components/responses/UnauthorizedError'
+          $ref: '#/components/responses/unauthorized_error'
         500:
-          $ref: '#/components/responses/SomethingWrong'
+          $ref: '#/components/responses/something_wrong'
         default:
-          $ref: '#/components/responses/SomethingWrong'
+          $ref: '#/components/responses/something_wrong'
 
   /agents:
     get:
@@ -77,11 +77,11 @@ paths:
                 items:
                   $ref: '#/components/schemas/agent'
         401:
-          $ref: '#/components/responses/UnauthorizedError'
+          $ref: '#/components/responses/unauthorized_error'
         500:
-          $ref: '#/components/responses/SomethingWrong'
+          $ref: '#/components/responses/something_wrong'
         default:
-          $ref: '#/components/responses/SomethingWrong' 
+          $ref: '#/components/responses/something_wrong' 
 
   /me:
     post:
