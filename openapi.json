@@ -15,6 +15,14 @@
       }
     },
     {
+      "name": "Payouts",
+      "description": "Payouts",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://tango.md"
+      }
+    },
+    {
       "name": "Operations",
       "description": "Operations",
       "externalDocs": {
@@ -678,7 +686,7 @@
     "/payouts/{payout_id}": {
       "post": {
         "tags": [
-          "Transfers"
+          "Payouts"
         ],
         "summary": "Update payout",
         "description": "Update existing payout",
@@ -1060,13 +1068,13 @@
         }
       }
     },
-    "/transfers/search": {
+    "/payouts/search": {
       "get": {
         "tags": [
-          "Transfers"
+          "Payouts"
         ],
-        "summary": "Search transfer by code",
-        "description": "Search transfer by code and generate payout document",
+        "summary": "Search available transfers by code and generate payout",
+        "description": "Search available transfer by code and generate payout document",
         "parameters": [
           {
             "in": "query",

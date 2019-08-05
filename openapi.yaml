@@ -9,6 +9,11 @@ tags:
     externalDocs:
       description: Find out more
       url: 'http://tango.md'
+  - name: Payouts
+    description: Payouts
+    externalDocs:
+      description: Find out more
+      url: 'http://tango.md'
   - name: Operations
     description: Operations
     externalDocs:
@@ -453,7 +458,7 @@ paths:
   '/payouts/{payout_id}':
     post:
       tags:
-        - Transfers
+        - Payouts
       summary: Update payout
       description: Update existing payout
       parameters:
@@ -723,12 +728,12 @@ paths:
           $ref: '#/components/responses/something_wrong'
         default:
           $ref: '#/components/responses/something_wrong'
-  /transfers/search:
+  /payouts/search:
     get:
       tags:
-        - Transfers
-      summary: Search transfer by code
-      description: Search transfer by code and generate payout document
+        - Payouts
+      summary: Search available transfers by code and generate payout
+      description: Search available transfer by code and generate payout document
       parameters:
         - in: query
           name: code
