@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.13.0",
+    "version": "1.14.0",
     "title": "Tango API",
     "description": "This is a sample for Tango API"
   },
@@ -21,9 +21,129 @@
         "description": "Find out more",
         "url": "http://tango.md"
       }
+    },
+    {
+      "name": "Me",
+      "description": "Everything about your user",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://tango.md/ru/"
+      }
+    },
+    {
+      "name": "Common",
+      "description": "Everything else",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://tango.md/ru/"
+      }
     }
   ],
   "paths": {
+    "/me": {
+      "post": {
+        "tags": [
+          "Me"
+        ],
+        "summary": "Registers user",
+        "description": "Create your user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/customer_basic_fields"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "password": {
+                        "description": "The user password",
+                        "type": "string",
+                        "format": "password",
+                        "example": "mystrongpassword1111"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "Authorization": {
+                "schema": {
+                  "type": "string",
+                  "example": "Bearer <TOKEN>"
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/something_wrong"
+          },
+          "default": {
+            "$ref": "#/components/responses/something_wrong"
+          }
+        }
+      }
+    },
+    "/authorization": {
+      "post": {
+        "tags": [
+          "Me"
+        ],
+        "summary": "Authenticate user",
+        "description": "Authenticate your user and get JWT token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "email": {
+                    "description": "The user mail",
+                    "type": "string",
+                    "format": "email",
+                    "example": "john.doe@gmail.com"
+                  },
+                  "password": {
+                    "description": "The user password",
+                    "type": "string",
+                    "format": "password",
+                    "example": "mystrongpassword1111"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "Authorization": {
+                "schema": {
+                  "type": "string",
+                  "example": "Bearer <TOKEN>"
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/something_wrong"
+          },
+          "default": {
+            "$ref": "#/components/responses/something_wrong"
+          }
+        }
+      }
+    },
     "/transfers": {
       "post": {
         "tags": [
@@ -667,24 +787,16 @@
       }
     },
     "schemas": {
-      "customer_basic_profile": {
+      "customer_basic_fields": {
         "required": [
-          "id",
-          "login",
           "firstname",
           "lastname",
-          "birthdate",
           "email",
-          "personal_number",
-          "phone",
-          "gender"
+          "birthdate",
+          "gender",
+          "phone"
         ],
         "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "example": "16f7b78a-5b1f-47a2-9502-162b317f302f"
-          },
           "firstname": {
             "description": "The user first name",
             "type": "string",
@@ -701,12 +813,6 @@
             "format": "email",
             "example": "john.doe@gmail.com"
           },
-          "phone": {
-            "description": "The user phone",
-            "type": "string",
-            "format": "phone",
-            "example": "+44 20 7377 8855"
-          },
           "birthdate": {
             "description": "The user birth date",
             "type": "string",
@@ -721,6 +827,29 @@
               "female"
             ],
             "example": "male"
+          },
+          "phone": {
+            "description": "The user phone",
+            "type": "string",
+            "format": "phone",
+            "example": "+44 20 7377 8855"
+          }
+        }
+      },
+      "customer_basic_profile": {
+        "required": [
+          "id"
+        ],
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/customer_basic_fields"
+          }
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "16f7b78a-5b1f-47a2-9502-162b317f302f"
           }
         }
       },
