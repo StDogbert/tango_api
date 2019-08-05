@@ -659,7 +659,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/transfer"
+                  "$ref": "#/components/schemas/payout"
                 },
                 "example": {
                   "id": "9a708769-776c-48e3-b19a-bbc5395ab365",
@@ -756,7 +756,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/transfer"
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/transfer"
+                    },
+                    {
+                      "$ref": "#/components/schemas/payout"
+                    }
+                  ]
                 },
                 "examples": {
                   "minimal_transfer": {
@@ -1533,7 +1540,10 @@
           "canceled"
         ]
       },
-      "opeartion_summary": {
+      "operation_summary": {
+        "required": [
+          "executed"
+        ],
         "properties": {
           "executed": {
             "type": "string",
@@ -1546,13 +1556,28 @@
               }
             ],
             "description": "Agent that executed the operation"
-          },
-          "code": {
-            "type": "string",
-            "description": "Code assigned to the operation on successful execution. Usually it comdes from external system (eg. Money Transfer System)",
-            "example": "FT23098230757"
           }
         }
+      },
+      "transfer_summary": {
+        "required": [
+          "code"
+        ],
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/operation_summary"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "code": {
+                "type": "string",
+                "description": "Code assigned to the operation on successful execution. Usually it comdes from external system (eg. Money Transfer System)",
+                "example": "FT23098230757"
+              }
+            }
+          }
+        ]
       },
       "operation": {
         "required": [
@@ -1595,14 +1620,6 @@
           },
           "prefered_agent": {
             "$ref": "#/components/schemas/agent"
-          },
-          "summary": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/opeartion_summary"
-              }
-            ],
-            "description": "Execution summary of the operation. For future use could include additional fields."
           }
         }
       },
@@ -1630,18 +1647,13 @@
         ]
       },
       "transfer_contract": {
-        "description": "Proposal details from a certain organization for the requested transfer.",
+        "description": "Base details for the transfer.",
         "required": [
           "id",
           "name",
-          "send_amount",
-          "send_currency",
+          "organization",
           "receive_amount",
-          "receive_currency",
-          "exchange_rate",
-          "fee_amount",
-          "total_send_amount",
-          "total_receive_amount"
+          "receive_currency"
         ],
         "properties": {
           "id": {
@@ -1656,24 +1668,6 @@
           },
           "organization": {
             "$ref": "#/components/schemas/organization"
-          },
-          "send_amount": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/amount"
-              }
-            ],
-            "description": "Amount in source currency to send",
-            "example": 100
-          },
-          "send_currency": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/currency_code"
-              }
-            ],
-            "description": "Currency code of amount to send",
-            "example": "USD"
           },
           "receive_amount": {
             "description": "Destination amount paid to receiver",
@@ -1692,32 +1686,70 @@
               }
             ],
             "example": "EUR"
-          },
-          "exchange_rate": {
-            "description": "Exchange rate",
-            "type": "number",
-            "format": "float",
-            "example": 0.7271
-          },
-          "fee_amount": {
-            "description": "Fee amount in source currency",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/amount"
-              }
-            ],
-            "example": 1.5
-          },
-          "total_send_amount": {
-            "description": "Total amount in source currency to pay including fee",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/amount"
-              }
-            ],
-            "example": 101.5
           }
         }
+      },
+      "transfer_send_contract": {
+        "description": "Proposal details from a certain organization for the requested send transfer.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/transfer_contract"
+          },
+          {
+            "type": "object",
+            "required": [
+              "send_amount",
+              "send_currency",
+              "exchange_rate",
+              "fee_amount",
+              "total_send_amount"
+            ],
+            "properties": {
+              "send_amount": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/amount"
+                  }
+                ],
+                "description": "Amount in source currency to send",
+                "example": 100
+              },
+              "send_currency": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/currency_code"
+                  }
+                ],
+                "description": "Currency code of amount to send",
+                "example": "USD"
+              },
+              "exchange_rate": {
+                "description": "Exchange rate",
+                "type": "number",
+                "format": "float",
+                "example": 0.7271
+              },
+              "fee_amount": {
+                "description": "Fee amount in source currency",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/amount"
+                  }
+                ],
+                "example": 1.5
+              },
+              "total_send_amount": {
+                "description": "Total amount in source currency to pay including fee",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/amount"
+                  }
+                ],
+                "example": 101.5
+              }
+            }
+          }
+        ]
       },
       "transfer": {
         "allOf": [
@@ -1747,11 +1779,6 @@
                 ],
                 "description": "Currency code of the operation",
                 "example": "USD"
-              },
-              "code": {
-                "type": "string",
-                "description": "Code assigned to the operation on successful execution. Usually it comdes from external system (eg. Money Transfer System)",
-                "example": "FT23098230757"
               },
               "destination": {
                 "description": "Destination city where to send money",
@@ -1788,7 +1815,72 @@
                 }
               },
               "contract": {
+                "$ref": "#/components/schemas/transfer_send_contract"
+              },
+              "summary": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/transfer_summary"
+                  }
+                ],
+                "description": "Execution summary of the transfer operation. For future use could include additional fields."
+              }
+            }
+          }
+        ]
+      },
+      "payout": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/operation"
+          },
+          {
+            "type": "object",
+            "required": [
+              "sender"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "description": "Code assigned to the operation on successful execution. Usually it comdes from external system (eg. Money Transfer System)",
+                "example": "FT23098230757"
+              },
+              "sender": {
+                "$ref": "#/components/schemas/correspondent"
+              },
+              "receiver": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/correspondent"
+                  }
+                ],
+                "example": {
+                  "id": "df9d59bc-a237-4972-9b09-08ffdc01a399",
+                  "firstname": "Jane",
+                  "lastname": "Doe",
+                  "phone": "+44 20 1311 7711",
+                  "location": {
+                    "id": "f3d7a372-dcb9-4f86-b6d3-3639e4a70a4b",
+                    "code": "LN",
+                    "name": "Lonigo",
+                    "country": {
+                      "id": "19241586-e09a-4cda-9a34-31561f8097e1",
+                      "code": "ITA",
+                      "name": "Italy"
+                    }
+                  }
+                }
+              },
+              "contract": {
                 "$ref": "#/components/schemas/transfer_contract"
+              },
+              "summary": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/operation_summary"
+                  }
+                ],
+                "description": "Execution summary of the transfer operation. For future use could include additional fields."
               }
             }
           }
