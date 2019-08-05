@@ -508,6 +508,12 @@ paths:
                     name: Sigue Money Transfer
                   receive_amount: 72.71
                   receive_currency: EUR
+        '401':
+          $ref: '#/components/responses/unauthorized_error'
+        '500':
+          $ref: '#/components/responses/something_wrong'
+        default:
+          $ref: '#/components/responses/something_wrong'
   '/operations/{operation_id}':
     get:
       tags:
@@ -834,6 +840,81 @@ paths:
                         name: Sigue Money Transfer
                       receive_amount: 72.71
                       receive_currency: EUR
+        '401':
+          $ref: '#/components/responses/unauthorized_error'
+        '500':
+          $ref: '#/components/responses/something_wrong'
+        default:
+          $ref: '#/components/responses/something_wrong'
+  /operations:
+    get:
+      tags:
+        - Operations
+      summary: Search operations
+      description: Search existing operation
+      parameters:
+        - in: query
+          name: types
+          schema:
+            type: array
+            uniqueItems: true
+            items:
+              $ref: '#/components/schemas/operation_type'
+            example:
+              - transfer
+              - payment
+            default:
+              - transfer
+              - payment
+              - payout
+          description: Only operation with stated types will be returned. Default value includes all operation types
+        - in: query
+          name: status
+          schema:
+            type: array
+            uniqueItems: true
+            items:
+              $ref: '#/components/schemas/operation_status'
+            example:
+              - executed
+            default:
+              - created
+              - executed
+              - canceled
+          description: Only operation with stated statuses will be returned. Default value includes all status types
+        - in: query
+          name: from
+          schema:
+            type: string
+            format: date-time
+            example: '2018-07-01T19:13:51.418Z'
+          required: false
+          description: If present server will return operations only from (including) this date
+        - in: query
+          name: to
+          schema:
+            type: string
+            format: date-time
+            example: '2019-08-05T11:04:22.397Z'
+          required: false
+          description: If present server will return operations only till (excluding) this date
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  anyOf:
+                    - $ref: '#/components/schemas/transfer'
+                    - $ref: '#/components/schemas/payout'
+        '401':
+          $ref: '#/components/responses/unauthorized_error'
+        '500':
+          $ref: '#/components/responses/something_wrong'
+        default:
+          $ref: '#/components/responses/something_wrong'
 components:
   securitySchemes:
     authentication:
