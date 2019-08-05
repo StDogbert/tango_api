@@ -382,6 +382,66 @@
         }
       }
     },
+    "/currencies": {
+      "get": {
+        "tags": [
+          "Common"
+        ],
+        "summary": "Available transfer currencies",
+        "description": "Get available transfer currencies",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "for",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "transfers",
+                "payments"
+              ],
+              "example": "transfers"
+            },
+            "required": false,
+            "description": "To filter currencies required only for certain area. If not specified all available currencies will be returned."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "description": "Operation currency code",
+                    "type": "string",
+                    "pattern": "^[A-Z]{3}$"
+                  }
+                },
+                "examples": {
+                  "expected": {
+                    "value": [
+                      "EUR",
+                      "USD",
+                      "MDL"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/unauthorized_error"
+          },
+          "500": {
+            "$ref": "#/components/responses/something_wrong"
+          },
+          "default": {
+            "$ref": "#/components/responses/something_wrong"
+          }
+        }
+      }
+    },
     "/correspondents": {
       "get": {
         "tags": [
