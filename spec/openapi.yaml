@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 1.16.0
+  version: 1.17.0
   title: Tango API
   description: This is a sample for Tango API
 tags:
@@ -469,6 +469,14 @@ paths:
       description: Create new transfer
       parameters:
         - in: query
+          name: preferred_agent[id]
+          description: Id of an agent to start deal with
+          required: false
+          schema:
+            type: string
+            format: uuid
+            example: 014d81df-ff4b-4580-9adf-a7379e888caa
+        - in: query
           name: amount
           description: Send amount
           required: false
@@ -483,7 +491,7 @@ paths:
           schema:
             type: string
             pattern: "^[A-Z]{3}$"
-            example: usd
+            example: USD
         - in: query
           name: receiver[id]
           description: Transfer receiver
@@ -513,21 +521,41 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/transfer"
-            examples:
-              full:
-                summary: Full info request example
-                value:
-                  preffered_agent:
-                    id: '014d81df-ff4b-4580-9adf-a7379e888caa'
-                  amount: 76.0
-                  currency: 'USD'
-                  destination:
+              properties:
+                preferred_agent:
+                  allOf:
+                    - $ref: "#/components/schemas/identifiable_object"
+                  description: Id of an agent to start deal with
+                  example:
+                    id: 014d81df-ff4b-4580-9adf-a7379e888caa
+                amount:
+                  description: Amount to send
+                  allOf:
+                    - $ref: "#/components/schemas/amount"
+                  example: 100.0
+                currency:
+                  allOf:
+                    - $ref: "#/components/schemas/currency_code"
+                  description: Currency code of the operation
+                  example: 'USD'
+                destination:
+                  allOf:
+                    - $ref: "#/components/schemas/identifiable_object"
+                  description: Id of a destination city where to send money
+                  example:
                     id: 'f3d7a372-dcb9-4f86-b6d3-3639e4a70a4b'
-                  receiver:
+                receiver:
+                  allOf:
+                    - $ref: "#/components/schemas/identifiable_object"
+                  description: Id of a correspondent/receviver
+                  example:
                     id: 'df9d59bc-a237-4972-9b09-08ffdc01a399'
-                  contract:
-                    id: 'ff530c93-c7d5-46b9-ad66-88706003aded'          
+                contract:
+                  allOf:
+                    - $ref: "#/components/schemas/identifiable_object"
+                  description: Id of a selected transfer options
+                  example:
+                    id: 'ff530c93-c7d5-46b9-ad66-88706003aded'
       responses:
         200:
           description: OK
@@ -1259,6 +1287,14 @@ components:
               description: Customer resident city
               allOf:
                 - $ref: "#/components/schemas/city"
+    identifiable_object:
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 'df697a99-634d-4ed7-9fdc-ef8cfb12278e'
     identifiable_record:
       required:
         - id
@@ -1295,6 +1331,8 @@ components:
               description: Country name
               example: 'Italy'
     city:
+      required:
+        - country
       allOf:
         - $ref: "#/components/schemas/identifiable_record"
         - type: object
@@ -1435,7 +1473,9 @@ components:
           type: boolean
           default: false
         prefered_agent:
-          $ref: "#/components/schemas/agent"
+          allOf:
+            - $ref: "#/components/schemas/agent"
+          description: Prefered agent to start deal with. It is not guaranteed that this agent will be finally selected for execution of an operation and servers only as a helper
 
     organization:
       allOf:
@@ -1559,7 +1599,9 @@ components:
                     code: 'ITA'
                     name: 'Italy'
             contract:
-              $ref: "#/components/schemas/transfer_send_contract"
+              allOf:
+                - $ref: "#/components/schemas/transfer_send_contract"
+              description: TODO
             summary:
               allOf:
                 - $ref: "#/components/schemas/transfer_summary"
@@ -1571,6 +1613,9 @@ components:
         - type: object
           required:
             - sender
+            - receiver
+            - code
+            - contract
           properties:
             code:
               type: string
@@ -1595,7 +1640,9 @@ components:
                     code: 'ITA'
                     name: 'Italy'
             contract:
-              $ref: "#/components/schemas/transfer_contract"
+              allOf:
+                - $ref: "#/components/schemas/transfer_contract"
+              description: TODO
             summary:
               allOf:
                 - $ref: "#/components/schemas/operation_summary"
