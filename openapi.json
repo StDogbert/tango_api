@@ -562,6 +562,119 @@
         }
       }
     },
+    "/transfers/tunnels": {
+      "get": {
+        "tags": [
+          "Transfers"
+        ],
+        "summary": "Available tunnels list",
+        "description": "Get payment tunnels list",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "destination[id]",
+            "description": "Destination location",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "d290f1ee-6c54-4b01-90e6-d701748f0851"
+            }
+          },
+          {
+            "in": "query",
+            "name": "amount",
+            "description": "Send amount",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "format": "double",
+              "example": 54.3
+            }
+          },
+          {
+            "in": "query",
+            "name": "currency",
+            "description": "Send currency",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Z]{3}$",
+              "example": "USD"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/transfer_send_contract"
+                  }
+                },
+                "examples": {
+                  "expected": {
+                    "value": [
+                      {
+                        "id": "6c87f227-6ac1-4cdc-8566-f8f29f9f1763",
+                        "name": "CMT ITA USD EUR",
+                        "organization": {
+                          "id": "6dc6e864-4155-4d57-8c46-b9034f6d9ec1",
+                          "code": "CMT",
+                          "name": "Custom Money Transfer"
+                        },
+                        "receive_amount": 39.48,
+                        "receive_currency": "EUR",
+                        "send_amount": 54.3,
+                        "send_currency": "USD",
+                        "exchange_rate": 0.7271,
+                        "fee_amount": 3,
+                        "total_send_amount": 57.3
+                      },
+                      {
+                        "id": "baa3a9ae-524f-4fd6-855a-b6791463784e",
+                        "name": "CMT ITA USD USD",
+                        "organization": {
+                          "id": "6dc6e864-4155-4d57-8c46-b9034f6d9ec1",
+                          "code": "CMT",
+                          "name": "Custom Money Transfer"
+                        },
+                        "receive_amount": 54.3,
+                        "receive_currency": "USD",
+                        "send_amount": 54.3,
+                        "send_currency": "USD",
+                        "exchange_rate": 1,
+                        "fee_amount": 1.5,
+                        "total_send_amount": 55.8
+                      },
+                      {
+                        "id": "ff530c93-c7d5-46b9-ad66-88706003aded",
+                        "name": "SIG ITA USD EUR",
+                        "organization": {
+                          "id": "ade01139-965e-4b4d-8128-cfa5ccf9ac3e",
+                          "code": "SMT",
+                          "name": "Sigue Money Transfer"
+                        },
+                        "receive_amount": 39.5,
+                        "receive_currency": "EUR",
+                        "send_amount": 54.3,
+                        "send_currency": "USD",
+                        "exchange_rate": 0.7275,
+                        "fee_amount": 2,
+                        "total_send_amount": 56.3
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/transfers": {
       "post": {
         "tags": [
