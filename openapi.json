@@ -1399,7 +1399,7 @@
           "Operations"
         ],
         "summary": "Search operations",
-        "description": "Search existing operation",
+        "description": "Search existing operations",
         "parameters": [
           {
             "in": "query",
