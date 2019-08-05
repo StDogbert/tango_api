@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 1.15.0
+  version: 1.16.0
   title: Tango API
   description: This is a sample for Tango API
 tags:
