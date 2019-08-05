@@ -723,6 +723,7 @@ paths:
           $ref: '#/components/responses/something_wrong'
         default:
           $ref: '#/components/responses/something_wrong'
+  /transfers/search:
     get:
       tags:
         - Transfers

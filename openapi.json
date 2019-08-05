@@ -1058,7 +1058,9 @@
             "$ref": "#/components/responses/something_wrong"
           }
         }
-      },
+      }
+    },
+    "/transfers/search": {
       "get": {
         "tags": [
           "Transfers"
