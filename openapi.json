@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.16.0",
+    "version": "1.17.0",
     "title": "Tango API",
     "description": "This is a sample for Tango API"
   },
@@ -675,6 +675,134 @@
         }
       }
     },
+    "/payouts/{payout_id}": {
+      "post": {
+        "tags": [
+          "Transfers"
+        ],
+        "summary": "Update payout",
+        "description": "Update existing payout",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "payout_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "9a708769-776c-48e3-b19a-bbc5395ab365"
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "preferred_agent": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/identifiable_object"
+                      }
+                    ],
+                    "description": "Id of an agent to start deal with",
+                    "example": {
+                      "id": "014d81df-ff4b-4580-9adf-a7379e888caa"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/payout"
+                },
+                "example": {
+                  "id": "9a708769-776c-48e3-b19a-bbc5395ab365",
+                  "alias": "QSC9237461",
+                  "type": "payout",
+                  "status": "created",
+                  "created": "2019-08-05T08:57:59.375Z",
+                  "modified": "2019-08-05T08:57:59.375Z",
+                  "is_finalized": false,
+                  "code": "FT23098230757",
+                  "preferred_agent": {
+                    "id": "014d81df-ff4b-4580-9adf-a7379e888caa",
+                    "name": "Atlantis Art Materials",
+                    "address": "28 Tabernacle St, London EC2A 4DD, UK",
+                    "phone": "+44 20 7377 8855",
+                    "latitude": 51.52283,
+                    "longitude": -0.08553,
+                    "website": "http://tango.md",
+                    "distance": 0.02562311926132259,
+                    "service": "transfer, payout, payment",
+                    "working_hours": "9:00AM-6:00PM"
+                  },
+                  "sender": {
+                    "id": "16f7b78a-5b1f-47a2-9502-162b317f302f",
+                    "firstname": "John",
+                    "lastname": "Doe",
+                    "phone": "+44 20 7377 8855",
+                    "location": {
+                      "id": "f3d7a372-dcb9-4f86-b6d3-3639e4a70a4b",
+                      "code": "LN",
+                      "name": "Lonigo",
+                      "country": {
+                        "id": "19241586-e09a-4cda-9a34-31561f8097e1",
+                        "code": "ITA",
+                        "name": "Italy"
+                      }
+                    }
+                  },
+                  "receiver": {
+                    "id": "df9d59bc-a237-4972-9b09-08ffdc01a399",
+                    "firstname": "Jane",
+                    "lastname": "Doe",
+                    "phone": "+44 20 1311 7711",
+                    "location": {
+                      "id": "f3d7a372-dcb9-4f86-b6d3-3639e4a70a4b",
+                      "code": "LN",
+                      "name": "Lonigo",
+                      "country": {
+                        "id": "19241586-e09a-4cda-9a34-31561f8097e1",
+                        "code": "ITA",
+                        "name": "Italy"
+                      }
+                    }
+                  },
+                  "contract": {
+                    "id": "ff530c93-c7d5-46b9-ad66-88706003aded",
+                    "name": "SIG ITA EUR",
+                    "organization": {
+                      "id": "ade01139-965e-4b4d-8128-cfa5ccf9ac3e",
+                      "code": "SMT",
+                      "name": "Sigue Money Transfer"
+                    },
+                    "receive_amount": 72.71,
+                    "receive_currency": "EUR"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/unauthorized_error"
+          },
+          "500": {
+            "$ref": "#/components/responses/something_wrong"
+          },
+          "default": {
+            "$ref": "#/components/responses/something_wrong"
+          }
+        }
+      }
+    },
     "/transfers": {
       "post": {
         "tags": [
@@ -683,6 +811,17 @@
         "summary": "Create transfer",
         "description": "Create new transfer",
         "parameters": [
+          {
+            "in": "query",
+            "name": "preferred_agent[id]",
+            "description": "Id of an agent to start deal with",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "014d81df-ff4b-4580-9adf-a7379e888caa"
+            }
+          },
           {
             "in": "query",
             "name": "amount",
@@ -702,7 +841,7 @@
             "schema": {
               "type": "string",
               "pattern": "^[A-Z]{3}$",
-              "example": "usd"
+              "example": "USD"
             }
           },
           {
@@ -744,24 +883,66 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/transfer"
-              },
-              "examples": {
-                "full": {
-                  "summary": "Full info request example",
-                  "value": {
-                    "preffered_agent": {
+                "properties": {
+                  "preferred_agent": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/identifiable_object"
+                      }
+                    ],
+                    "description": "Id of an agent to start deal with",
+                    "example": {
                       "id": "014d81df-ff4b-4580-9adf-a7379e888caa"
-                    },
-                    "amount": 76,
-                    "currency": "USD",
-                    "destination": {
+                    }
+                  },
+                  "amount": {
+                    "description": "Amount to send",
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/amount"
+                      }
+                    ],
+                    "example": 100
+                  },
+                  "currency": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/currency_code"
+                      }
+                    ],
+                    "description": "Currency code of the operation",
+                    "example": "USD"
+                  },
+                  "destination": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/identifiable_object"
+                      }
+                    ],
+                    "description": "Id of a destination city where to send money",
+                    "example": {
                       "id": "f3d7a372-dcb9-4f86-b6d3-3639e4a70a4b"
-                    },
-                    "receiver": {
+                    }
+                  },
+                  "receiver": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/identifiable_object"
+                      }
+                    ],
+                    "description": "Id of a correspondent/receviver",
+                    "example": {
                       "id": "df9d59bc-a237-4972-9b09-08ffdc01a399"
-                    },
-                    "contract": {
+                    }
+                  },
+                  "contract": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/identifiable_object"
+                      }
+                    ],
+                    "description": "Id of a selected transfer options",
+                    "example": {
                       "id": "ff530c93-c7d5-46b9-ad66-88706003aded"
                     }
                   }
@@ -788,7 +969,7 @@
                       "created": "2019-08-02T08:57:59.375Z",
                       "modified": "2019-08-02T08:57:59.375Z",
                       "is_finalized": false,
-                      "prefered_agent": {
+                      "preferred_agent": {
                         "id": "014d81df-ff4b-4580-9adf-a7379e888caa",
                         "name": "Atlantis Art Materials",
                         "address": "28 Tabernacle St, London EC2A 4DD, UK",
@@ -912,7 +1093,7 @@
                   "modified": "2019-08-05T08:57:59.375Z",
                   "is_finalized": false,
                   "code": "FT23098230757",
-                  "prefered_agent": {
+                  "preferred_agent": {
                     "id": "014d81df-ff4b-4580-9adf-a7379e888caa",
                     "name": "Atlantis Art Materials",
                     "address": "28 Tabernacle St, London EC2A 4DD, UK",
@@ -1053,7 +1234,7 @@
                       "created": "2019-08-02T08:57:59.375Z",
                       "modified": "2019-08-02T08:57:59.375Z",
                       "is_finalized": false,
-                      "prefered_agent": {
+                      "preferred_agent": {
                         "id": "014d81df-ff4b-4580-9adf-a7379e888caa",
                         "name": "Atlantis Art Materials",
                         "address": "28 Tabernacle St, London EC2A 4DD, UK",
@@ -1137,7 +1318,7 @@
                       "created": "2019-08-02T08:57:59.375Z",
                       "modified": "2019-08-02T08:57:59.375Z",
                       "is_finalized": true,
-                      "prefered_agent": {
+                      "preferred_agent": {
                         "id": "014d81df-ff4b-4580-9adf-a7379e888caa",
                         "name": "Atlantis Art Materials",
                         "address": "28 Tabernacle St, London EC2A 4DD, UK",
@@ -1238,18 +1419,6 @@
                       "modified": "2019-08-05T08:57:59.375Z",
                       "is_finalized": false,
                       "code": "FT23098230757",
-                      "prefered_agent": {
-                        "id": "014d81df-ff4b-4580-9adf-a7379e888caa",
-                        "name": "Atlantis Art Materials",
-                        "address": "28 Tabernacle St, London EC2A 4DD, UK",
-                        "phone": "+44 20 7377 8855",
-                        "latitude": 51.52283,
-                        "longitude": -0.08553,
-                        "website": "http://tango.md",
-                        "distance": 0.02562311926132259,
-                        "service": "transfer, payout, payment",
-                        "working_hours": "9:00AM-6:00PM"
-                      },
                       "sender": {
                         "id": "16f7b78a-5b1f-47a2-9502-162b317f302f",
                         "firstname": "John",
@@ -1305,7 +1474,7 @@
                       "modified": "2019-08-05T08:57:59.375Z",
                       "is_finalized": true,
                       "code": "FT23098230757",
-                      "prefered_agent": {
+                      "preferred_agent": {
                         "id": "014d81df-ff4b-4580-9adf-a7379e888caa",
                         "name": "Atlantis Art Materials",
                         "address": "28 Tabernacle St, London EC2A 4DD, UK",
@@ -1739,6 +1908,18 @@
           }
         ]
       },
+      "identifiable_object": {
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "example": "df697a99-634d-4ed7-9fdc-ef8cfb12278e"
+          }
+        }
+      },
       "identifiable_record": {
         "required": [
           "id",
@@ -1793,6 +1974,9 @@
         ]
       },
       "city": {
+        "required": [
+          "country"
+        ],
         "allOf": [
           {
             "$ref": "#/components/schemas/identifiable_record"
@@ -1983,8 +2167,13 @@
             "type": "boolean",
             "default": false
           },
-          "prefered_agent": {
-            "$ref": "#/components/schemas/agent"
+          "preferred_agent": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/agent"
+              }
+            ],
+            "description": "Prefered agent to start deal with. It is not guaranteed that this agent will be finally selected for execution of an operation and servers only as a helper"
           }
         }
       },
@@ -2180,7 +2369,12 @@
                 }
               },
               "contract": {
-                "$ref": "#/components/schemas/transfer_send_contract"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/transfer_send_contract"
+                  }
+                ],
+                "description": "TODO"
               },
               "summary": {
                 "allOf": [
@@ -2202,7 +2396,10 @@
           {
             "type": "object",
             "required": [
-              "sender"
+              "sender",
+              "receiver",
+              "code",
+              "contract"
             ],
             "properties": {
               "code": {
@@ -2237,7 +2434,12 @@
                 }
               },
               "contract": {
-                "$ref": "#/components/schemas/transfer_contract"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/transfer_contract"
+                  }
+                ],
+                "description": "TODO"
               },
               "summary": {
                 "allOf": [
