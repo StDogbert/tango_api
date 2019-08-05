@@ -151,6 +151,60 @@ paths:
           default:
             $ref: "#/components/responses/something_wrong"
 
+  /locations:
+    get:
+      tags:
+        - Common
+      summary: Locations list
+      description: 'Get locations list'
+      parameters:
+        - in: query
+          name: search
+          required: true
+          schema:
+            type: string
+            pattern: '^[A-Za-z]+'
+          example: 'lon'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json: 
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/city'
+              examples:
+                expected:
+                  value:
+                    - id: '9eb5fd41-16f8-430c-91b7-a69ad1fd4c89'
+                      code: 'KIV'
+                      name: 'Kishinev'
+                      country:
+                        id: '5d54dad8-f05c-499c-b2d1-b1ae7c0ca4ae'
+                        code: 'MDA'
+                        name: 'Moldova'
+                    - id: 'f3d7a372-dcb9-4f86-b6d3-3639e4a70a4b'
+                      code: 'ROM'
+                      name: 'ROME'
+                      country:
+                        id: '19241586-e09a-4cda-9a34-31561f8097e1'
+                        code: 'ITA'
+                        name: 'Italy'
+                    - id: '98ad3e5c-3882-4002-b9c4-bcf97556f735'
+                      code: 'NY'
+                      name: 'New York'
+                      country:
+                        id: '8a83d6fb-8732-496e-a8ff-0ec20215b1eb'
+                        code: 'USA'
+                        name: 'United States'
+        401:
+          $ref: '#/components/responses/unauthorized_error'
+        500:
+          $ref: '#/components/responses/something_wrong'
+        default:
+          $ref: '#/components/responses/something_wrong'
+
   /correspondents:
     get:
       tags:
@@ -187,7 +241,7 @@ paths:
                           country:
                             id: '8a83d6fb-8732-496e-a8ff-0ec20215b1eb'
                             code: 'USA'
-                            name: 'United States of America'
+                            name: 'United States'
                         is_user: false
                       - id: 'a531b9f3-822d-4817-9641-f628a984d1aa'
                         firstname: 'Jhon'
@@ -212,7 +266,7 @@ paths:
                           country:
                             id: '5d54dad8-f05c-499c-b2d1-b1ae7c0ca4ae'
                             code: 'MDA'
-                            name: 'Moldova, Republic of'
+                            name: 'Moldova'
                         is_user: true
                         phone: '37369000001'
                       - id: '12419fe5-2771-4212-bbaf-ab626bb11d03'
@@ -225,7 +279,7 @@ paths:
                           country:
                             id: '5d54dad8-f05c-499c-b2d1-b1ae7c0ca4ae'
                             code: 'MDA'
-                            name: 'Moldova, Republic of'
+                            name: 'Moldova'
                         is_user: true
                         phone: '37369000002'
         401:
