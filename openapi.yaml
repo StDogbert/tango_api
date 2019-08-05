@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 1.14.0
+  version: 1.15.0
   title: Tango API
   description: This is a sample for Tango API
 tags:
@@ -25,6 +25,61 @@ tags:
       description: Find out more
       url: 'http://tango.md/ru/'
 paths:
+  /advertising:
+    get:
+      tags:
+        - Common
+      summary: Advertising
+      description: Get advertising info
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/advertising'
+              examples:
+                expected:
+                  value:
+                    - type: browser
+                      url: <some url 1>
+                      image_url: <some image url 1>
+                    - type: browser
+                      url: <some url 2>
+                      image_url: <some image url 2>
+                    - type: container
+                      url: <some url 3>
+                      image_url: <some image url 3>
+                      header: <some header 3>
+        '401':
+          $ref: '#/components/responses/unauthorized_error'
+        '500':
+          $ref: '#/components/responses/something_wrong'
+        default:
+          $ref: '#/components/responses/something_wrong'
+  /agents:
+    get:
+      tags:
+        - Common
+      summary: Agents list
+      description: Get agents list
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/agent'
+        '401':
+          $ref: '#/components/responses/unauthorized_error'
+        '500':
+          $ref: '#/components/responses/something_wrong'
+        default:
+          $ref: '#/components/responses/something_wrong'
   /me:
     post:
       tags:
@@ -594,6 +649,63 @@ components:
                 error: <error reason>
                 error_code: <some error code>
   schemas:
+    advertising:
+      required:
+        - type
+        - url
+        - image_url
+      properties:
+        type:
+          description: Advertising type
+          type: string
+          enum:
+            - browser
+            - container
+          example: browser
+        url:
+          description: Advertising url
+          type: string
+          format: url
+          example: 'https://www.google.com'
+        image_url:
+          description: Advertising image url
+          type: string
+          format: url
+          example: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/1024px-Google_%22G%22_Logo.svg.png'
+        header:
+          description: 'Advertising header, for container type only'
+          type: string
+          example: Some intresting header
+    correspondent:
+      required:
+        - id
+        - firstname
+        - lastname
+        - location
+        - is_user
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 16f7b78a-5b1f-47a2-9502-162b317f302f
+        firstname:
+          description: The user first name
+          type: string
+          example: John
+        lastname:
+          description: The user last name
+          type: string
+          example: Doe
+        location:
+          $ref: '#/components/schemas/city'
+        is_user:
+          type: boolean
+          description: Indicates if it is correspondent generated from user based on your phone book
+        phone:
+          description: The user phone
+          type: string
+          format: phone
+          example: +44 20 7377 8855
     customer_basic_fields:
       required:
         - firstname
@@ -942,10 +1054,10 @@ components:
               allOf:
                 - $ref: '#/components/schemas/city'
             sender:
-              $ref: '#/components/schemas/customer_full_profile'
+              $ref: '#/components/schemas/correspondent'
             receiver:
               allOf:
-                - $ref: '#/components/schemas/customer_full_profile'
+                - $ref: '#/components/schemas/correspondent'
               example:
                 id: df9d59bc-a237-4972-9b09-08ffdc01a399
                 firstname: Jane
