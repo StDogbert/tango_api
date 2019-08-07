@@ -404,6 +404,8 @@
             "schema": {
               "type": "string",
               "enum": [
+                "sends",
+                "payouts",
                 "transfers",
                 "payments"
               ],
@@ -576,7 +578,7 @@
           "Transfers"
         ],
         "summary": "Available tunnels list",
-        "description": "Get payment tunnels list",
+        "description": "Get transfers tunnels list",
         "parameters": [
           {
             "in": "query",
@@ -683,13 +685,13 @@
         }
       }
     },
-    "/transfers": {
+    "/sends": {
       "post": {
         "tags": [
           "Transfers"
         ],
-        "summary": "Create transfer",
-        "description": "Create new transfer",
+        "summary": "Create send",
+        "description": "Create new send",
         "parameters": [
           {
             "in": "query",
@@ -708,8 +710,11 @@
             "description": "Send amount",
             "required": false,
             "schema": {
-              "type": "number",
-              "format": "double",
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/amount"
+                }
+              ],
               "example": 100
             }
           },
@@ -719,9 +724,7 @@
             "description": "Send currency",
             "required": false,
             "schema": {
-              "type": "string",
-              "pattern": "^[A-Z]{3}$",
-              "example": "USD"
+              "$ref": "#/components/schemas/currency_code"
             }
           },
           {
@@ -755,6 +758,22 @@
               "type": "string",
               "format": "uuid",
               "example": "ff530c93-c7d5-46b9-ad66-88706003aded"
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "description": "Status of document",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/operation_status"
+                }
+              ],
+              "example": "ready",
+              "default": "created"
             }
           }
         ],
@@ -825,6 +844,16 @@
                     "example": {
                       "id": "ff530c93-c7d5-46b9-ad66-88706003aded"
                     }
+                  },
+                  "status": {
+                    "type": "string",
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/operation_status"
+                      }
+                    ],
+                    "example": "ready",
+                    "default": "created"
                   }
                 }
               }
@@ -837,15 +866,15 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/transfer"
+                  "$ref": "#/components/schemas/send"
                 },
                 "examples": {
                   "full": {
                     "value": {
                       "id": "49b63448-650d-4e33-a5a6-d7258724d618",
                       "alias": "QSC2774402",
-                      "type": "transfer",
-                      "status": "created",
+                      "type": "send",
+                      "status": "ready",
                       "created": "2019-08-02T08:57:59.375Z",
                       "modified": "2019-08-02T08:57:59.375Z",
                       "is_finalized": false,
@@ -858,7 +887,7 @@
                         "longitude": -0.08553,
                         "website": "http://tango.md",
                         "distance": 0.02562311926132259,
-                        "service": "transfer, payout, payment",
+                        "service": "send, payout, payment",
                         "working_hours": "9:00AM-6:00PM"
                       },
                       "amount": 100,
@@ -940,27 +969,231 @@
         }
       }
     },
-    "/payouts/search": {
-      "get": {
+    "/sends/{send_id}": {
+      "post": {
         "tags": [
-          "Payouts"
+          "Transfers"
         ],
-        "summary": "Search available transfers by code and generate payout",
-        "description": "Search available transfer by code and generate payout document",
+        "summary": "Update send",
+        "description": "Update existing send",
         "parameters": [
           {
-            "in": "query",
-            "name": "code",
+            "in": "path",
+            "name": "send_id",
             "required": true,
             "schema": {
               "type": "string"
             },
-            "example": "SIG826345"
+            "example": "49b63448-650d-4e33-a5a6-d7258724d618"
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "preferred_agent": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/identifiable_object"
+                      }
+                    ],
+                    "description": "Id of an agent to start deal with",
+                    "example": {
+                      "id": "014d81df-ff4b-4580-9adf-a7379e888caa"
+                    }
+                  },
+                  "amount": {
+                    "description": "Amount to send",
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/amount"
+                      }
+                    ],
+                    "example": 100
+                  },
+                  "currency": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/currency_code"
+                      }
+                    ],
+                    "description": "Currency code of the operation",
+                    "example": "USD"
+                  },
+                  "destination": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/identifiable_object"
+                      }
+                    ],
+                    "description": "Id of a destination city where to send money",
+                    "example": {
+                      "id": "f3d7a372-dcb9-4f86-b6d3-3639e4a70a4b"
+                    }
+                  },
+                  "receiver": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/identifiable_object"
+                      }
+                    ],
+                    "description": "Id of a correspondent/receviver",
+                    "example": {
+                      "id": "df9d59bc-a237-4972-9b09-08ffdc01a399"
+                    }
+                  },
+                  "contract": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/identifiable_object"
+                      }
+                    ],
+                    "description": "Id of a selected transfer options",
+                    "example": {
+                      "id": "ff530c93-c7d5-46b9-ad66-88706003aded"
+                    }
+                  },
+                  "status": {
+                    "type": "string",
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/operation_status"
+                      }
+                    ],
+                    "example": "ready",
+                    "default": "created"
+                  }
+                },
+                "example": {
+                  "preferred_agent": {
+                    "id": "014d81df-ff4b-4580-9adf-a7379e888caa"
+                  },
+                  "destination": {
+                    "id": "f3d7a372-dcb9-4f86-b6d3-3639e4a70a4b"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Operation exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/send"
+                },
+                "example": {
+                  "id": "49b63448-650d-4e33-a5a6-d7258724d618",
+                  "alias": "QSC2774402",
+                  "type": "send",
+                  "status": "created",
+                  "created": "2019-08-02T08:57:59.375Z",
+                  "modified": "2019-08-02T08:57:59.375Z",
+                  "is_finalized": false,
+                  "preferred_agent": {
+                    "id": "014d81df-ff4b-4580-9adf-a7379e888caa",
+                    "name": "Atlantis Art Materials",
+                    "address": "28 Tabernacle St, London EC2A 4DD, UK",
+                    "phone": "+44 20 7377 8855",
+                    "latitude": 51.52283,
+                    "longitude": -0.08553,
+                    "website": "http://tango.md",
+                    "distance": 0.02562311926132259,
+                    "service": "send, payout, payment",
+                    "working_hours": "9:00AM-6:00PM"
+                  },
+                  "destination": {
+                    "id": "f3d7a372-dcb9-4f86-b6d3-3639e4a70a4b",
+                    "code": "LN",
+                    "name": "Lonigo",
+                    "country": {
+                      "id": "19241586-e09a-4cda-9a34-31561f8097e1",
+                      "code": "ITA",
+                      "name": "Italy"
+                    }
+                  },
+                  "sender": {
+                    "id": "16f7b78a-5b1f-47a2-9502-162b317f302f",
+                    "firstname": "John",
+                    "lastname": "Doe",
+                    "phone": "+44 20 7377 8855",
+                    "location": {
+                      "id": "f3d7a372-dcb9-4f86-b6d3-3639e4a70a4b",
+                      "code": "LN",
+                      "name": "Lonigo",
+                      "country": {
+                        "id": "19241586-e09a-4cda-9a34-31561f8097e1",
+                        "code": "ITA",
+                        "name": "Italy"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payouts/search": {
+      "get": {
+        "tags": [
+          "Transfers"
+        ],
+        "summary": "Search available sends by code and generate payout",
+        "description": "Search available sends by code and generate payout document",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "code",
+            "description": "Send identifier in money transfer system",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "SIG826345"
+            }
+          },
+          {
+            "in": "query",
+            "name": "organization[id]",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "ade01139-965e-4b4d-8128-cfa5ccf9ac3e"
+            }
+          },
+          {
+            "in": "query",
+            "name": "amount",
+            "description": "Send amount",
+            "required": true,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/amount"
+                }
+              ],
+              "example": 100
+            }
+          },
+          {
+            "in": "query",
+            "name": "currency",
+            "description": "Send currency",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/currency_code"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Transfer exists",
+            "description": "Send exists",
             "content": {
               "application/json": {
                 "schema": {
@@ -984,7 +1217,7 @@
                     "longitude": -0.08553,
                     "website": "http://tango.md",
                     "distance": 0.02562311926132259,
-                    "service": "transfer, payout, payment",
+                    "service": "send, payout, payment",
                     "working_hours": "9:00AM-6:00PM"
                   },
                   "sender": {
@@ -1049,7 +1282,7 @@
     "/payouts/{payout_id}": {
       "post": {
         "tags": [
-          "Payouts"
+          "Transfers"
         ],
         "summary": "Update payout",
         "description": "Update existing payout",
@@ -1080,6 +1313,16 @@
                     "example": {
                       "id": "014d81df-ff4b-4580-9adf-a7379e888caa"
                     }
+                  },
+                  "status": {
+                    "type": "string",
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/operation_status"
+                      }
+                    ],
+                    "example": "ready",
+                    "default": "created"
                   }
                 }
               }
@@ -1098,7 +1341,7 @@
                   "id": "9a708769-776c-48e3-b19a-bbc5395ab365",
                   "alias": "QSC9237461",
                   "type": "payout",
-                  "status": "created",
+                  "status": "ready",
                   "created": "2019-08-05T08:57:59.375Z",
                   "modified": "2019-08-05T08:57:59.375Z",
                   "is_finalized": false,
@@ -1112,7 +1355,7 @@
                     "longitude": -0.08553,
                     "website": "http://tango.md",
                     "distance": 0.02562311926132259,
-                    "service": "transfer, payout, payment",
+                    "service": "send, payout, payment",
                     "working_hours": "9:00AM-6:00PM"
                   },
                   "sender": {
@@ -1200,7 +1443,7 @@
                 "schema": {
                   "oneOf": [
                     {
-                      "$ref": "#/components/schemas/transfer"
+                      "$ref": "#/components/schemas/send"
                     },
                     {
                       "$ref": "#/components/schemas/payout"
@@ -1208,11 +1451,11 @@
                   ]
                 },
                 "examples": {
-                  "minimal_transfer": {
+                  "minimal_send_created": {
                     "value": {
                       "id": "49b63448-650d-4e33-a5a6-d7258724d618",
                       "alias": "QSC2774402",
-                      "type": "transfer",
+                      "type": "send",
                       "status": "created",
                       "created": "2019-08-02T08:57:59.375Z",
                       "modified": "2019-08-02T08:57:59.375Z",
@@ -1235,12 +1478,12 @@
                       }
                     }
                   },
-                  "created_transfer": {
+                  "send_ready": {
                     "value": {
                       "id": "49b63448-650d-4e33-a5a6-d7258724d618",
                       "alias": "QSC2774402",
-                      "type": "transfer",
-                      "status": "created",
+                      "type": "send",
+                      "status": "ready",
                       "created": "2019-08-02T08:57:59.375Z",
                       "modified": "2019-08-02T08:57:59.375Z",
                       "is_finalized": false,
@@ -1253,7 +1496,7 @@
                         "longitude": -0.08553,
                         "website": "http://tango.md",
                         "distance": 0.02562311926132259,
-                        "service": "transfer, payout, payment",
+                        "service": "send, payout, payment",
                         "working_hours": "9:00AM-6:00PM"
                       },
                       "amount": 100,
@@ -1319,11 +1562,11 @@
                       }
                     }
                   },
-                  "executed_transfer": {
+                  "send_executed": {
                     "value": {
                       "id": "49b63448-650d-4e33-a5a6-d7258724d618",
                       "alias": "QSC2774402",
-                      "type": "transfer",
+                      "type": "send",
                       "status": "executed",
                       "created": "2019-08-02T08:57:59.375Z",
                       "modified": "2019-08-02T08:57:59.375Z",
@@ -1337,7 +1580,7 @@
                         "longitude": -0.08553,
                         "website": "http://tango.md",
                         "distance": 0.02562311926132259,
-                        "service": "transfer, payout, payment",
+                        "service": "send, payout, payment",
                         "working_hours": "9:00AM-6:00PM"
                       },
                       "summary": {
@@ -1351,7 +1594,7 @@
                           "longitude": -0.08553,
                           "website": "http://tango.md",
                           "distance": 0.02562311926132259,
-                          "service": "transfer, payout, payment",
+                          "service": "send, payout, payment",
                           "working_hours": "9:00AM-6:00PM"
                         },
                         "code": "FT23098230757"
@@ -1419,7 +1662,7 @@
                       }
                     }
                   },
-                  "created_payout": {
+                  "payout_created": {
                     "value": {
                       "id": "9a708769-776c-48e3-b19a-bbc5395ab365",
                       "alias": "QSC9237461",
@@ -1474,7 +1717,7 @@
                       }
                     }
                   },
-                  "executed_payout": {
+                  "payout_executed": {
                     "value": {
                       "id": "9a708769-776c-48e3-b19a-bbc5395ab365",
                       "alias": "QSC9237461",
@@ -1493,7 +1736,7 @@
                         "longitude": -0.08553,
                         "website": "http://tango.md",
                         "distance": 0.02562311926132259,
-                        "service": "transfer, payout, payment",
+                        "service": "send, payout, payment",
                         "working_hours": "9:00AM-6:00PM"
                       },
                       "summary": {
@@ -1507,7 +1750,7 @@
                           "longitude": -0.08553,
                           "website": "http://tango.md",
                           "distance": 0.02562311926132259,
-                          "service": "transfer, payout, payment",
+                          "service": "send, payout, payment",
                           "working_hours": "9:00AM-6:00PM"
                         }
                       },
@@ -1654,7 +1897,7 @@
                   "items": {
                     "anyOf": [
                       {
-                        "$ref": "#/components/schemas/transfer"
+                        "$ref": "#/components/schemas/send"
                       },
                       {
                         "$ref": "#/components/schemas/payout"
@@ -2072,7 +2315,7 @@
           "service": {
             "description": "Services provided by Agent",
             "type": "string",
-            "example": "transfer, payout, payment"
+            "example": "send, payout, payment"
           },
           "working_hours": {
             "description": "Agent working hours. Defined as simple string, but should be implemented as complex object with week days and from and to fields.",
@@ -2085,7 +2328,7 @@
         "type": "string",
         "description": "Operation type",
         "enum": [
-          "transfer",
+          "send",
           "payout",
           "payment"
         ]
@@ -2095,6 +2338,7 @@
         "description": "Set of common operation states",
         "enum": [
           "created",
+          "ready",
           "executed",
           "canceled"
         ]
@@ -2118,7 +2362,14 @@
           }
         }
       },
-      "transfer_summary": {
+      "transfer_payout_summary": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/operation_summary"
+          }
+        ]
+      },
+      "transfer_send_summary": {
         "required": [
           "code"
         ],
@@ -2253,11 +2504,19 @@
           }
         }
       },
+      "transfer_payout_contract": {
+        "description": "Base details for the transfer.",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/transfer_contract"
+          }
+        ]
+      },
       "transfer_send_contract": {
         "description": "Proposal details from a certain organization for the requested send transfer.",
         "allOf": [
           {
-            "$ref": "#/components/schemas/transfer_contract"
+            "$ref": "#/components/schemas/transfer_payout_contract"
           },
           {
             "type": "object",
@@ -2326,6 +2585,44 @@
               "sender"
             ],
             "properties": {
+              "sender": {
+                "$ref": "#/components/schemas/correspondent"
+              },
+              "receiver": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/correspondent"
+                  }
+                ],
+                "example": {
+                  "id": "df9d59bc-a237-4972-9b09-08ffdc01a399",
+                  "firstname": "Jane",
+                  "lastname": "Doe",
+                  "phone": "+44 20 1311 7711",
+                  "location": {
+                    "id": "f3d7a372-dcb9-4f86-b6d3-3639e4a70a4b",
+                    "code": "LN",
+                    "name": "Lonigo",
+                    "country": {
+                      "id": "19241586-e09a-4cda-9a34-31561f8097e1",
+                      "code": "ITA",
+                      "name": "Italy"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "send": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/transfer"
+          },
+          {
+            "type": "object",
+            "properties": {
               "amount": {
                 "description": "Amount to send",
                 "allOf": [
@@ -2352,32 +2649,6 @@
                   }
                 ]
               },
-              "sender": {
-                "$ref": "#/components/schemas/correspondent"
-              },
-              "receiver": {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/correspondent"
-                  }
-                ],
-                "example": {
-                  "id": "df9d59bc-a237-4972-9b09-08ffdc01a399",
-                  "firstname": "Jane",
-                  "lastname": "Doe",
-                  "phone": "+44 20 1311 7711",
-                  "location": {
-                    "id": "f3d7a372-dcb9-4f86-b6d3-3639e4a70a4b",
-                    "code": "LN",
-                    "name": "Lonigo",
-                    "country": {
-                      "id": "19241586-e09a-4cda-9a34-31561f8097e1",
-                      "code": "ITA",
-                      "name": "Italy"
-                    }
-                  }
-                }
-              },
               "contract": {
                 "allOf": [
                   {
@@ -2389,7 +2660,7 @@
               "summary": {
                 "allOf": [
                   {
-                    "$ref": "#/components/schemas/transfer_summary"
+                    "$ref": "#/components/schemas/transfer_send_summary"
                   }
                 ],
                 "description": "Execution summary of the transfer operation. For future use could include additional fields."
@@ -2401,12 +2672,11 @@
       "payout": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/operation"
+            "$ref": "#/components/schemas/transfer"
           },
           {
             "type": "object",
             "required": [
-              "sender",
               "receiver",
               "code",
               "contract"
@@ -2417,36 +2687,10 @@
                 "description": "Code assigned to the operation on successful execution. Usually it comdes from external system (eg. Money Transfer System)",
                 "example": "FT23098230757"
               },
-              "sender": {
-                "$ref": "#/components/schemas/correspondent"
-              },
-              "receiver": {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/correspondent"
-                  }
-                ],
-                "example": {
-                  "id": "df9d59bc-a237-4972-9b09-08ffdc01a399",
-                  "firstname": "Jane",
-                  "lastname": "Doe",
-                  "phone": "+44 20 1311 7711",
-                  "location": {
-                    "id": "f3d7a372-dcb9-4f86-b6d3-3639e4a70a4b",
-                    "code": "LN",
-                    "name": "Lonigo",
-                    "country": {
-                      "id": "19241586-e09a-4cda-9a34-31561f8097e1",
-                      "code": "ITA",
-                      "name": "Italy"
-                    }
-                  }
-                }
-              },
               "contract": {
                 "allOf": [
                   {
-                    "$ref": "#/components/schemas/transfer_contract"
+                    "$ref": "#/components/schemas/transfer_payout_contract"
                   }
                 ],
                 "description": "TODO"
@@ -2454,7 +2698,7 @@
               "summary": {
                 "allOf": [
                   {
-                    "$ref": "#/components/schemas/operation_summary"
+                    "$ref": "#/components/schemas/transfer_payout_summary"
                   }
                 ],
                 "description": "Execution summary of the transfer operation. For future use could include additional fields."
