@@ -7,6 +7,14 @@
   },
   "tags": [
     {
+      "name": "Authentication",
+      "description": "User authentication",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://tango.md/ru/"
+      }
+    },
+    {
       "name": "Me",
       "description": "Everything about your user",
       "externalDocs": {
@@ -48,6 +56,181 @@
     }
   ],
   "paths": {
+    "/registration": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Registers user",
+        "description": "Create your user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/customer_basic_fields"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "password": {
+                        "description": "The user password",
+                        "type": "string",
+                        "format": "password",
+                        "example": "mystrongpassword1111"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "Authorization": {
+                "schema": {
+                  "type": "string",
+                  "example": "Bearer <TOKEN>"
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/something_wrong"
+          },
+          "default": {
+            "$ref": "#/components/responses/something_wrong"
+          }
+        }
+      }
+    },
+    "/authorization": {
+      "post": {
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "Autorize user",
+        "description": "Autorize your user and get JWT token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "email": {
+                    "description": "The user mail",
+                    "type": "string",
+                    "format": "email",
+                    "example": "john.doe@gmail.com"
+                  },
+                  "password": {
+                    "description": "The user password",
+                    "type": "string",
+                    "format": "password",
+                    "example": "mystrongpassword1111"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "Authorization": {
+                "schema": {
+                  "type": "string",
+                  "example": "Bearer <TOKEN>"
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/something_wrong"
+          },
+          "default": {
+            "$ref": "#/components/responses/something_wrong"
+          }
+        }
+      }
+    },
+    "/me": {
+      "get": {
+        "tags": [
+          "Me"
+        ],
+        "summary": "User full info",
+        "description": "Get your user full info. May require password or some sort of additional validation in future. IN PROGRESS",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/customer_full_profile"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/me/short": {
+      "get": {
+        "tags": [
+          "Me"
+        ],
+        "summary": "User short info",
+        "description": "Get your user short info. Reasoning behind this method - allow some level of user info exposure without additional validation except already used JWT. Full user info may require additional validation in future.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "firstname": {
+                      "description": "The user first name",
+                      "type": "string",
+                      "example": "John"
+                    },
+                    "lastname": {
+                      "description": "The user last name",
+                      "type": "string",
+                      "example": "Doe"
+                    },
+                    "avatar": {
+                      "description": "The user avatar url",
+                      "type": "string",
+                      "format": "url",
+                      "example": "https://vignette.wikia.nocookie.net/southpark/images/9/95/Kyle-broflovski.png/revision/latest?cb=20190411033301"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/unauthorized_error"
+          },
+          "500": {
+            "$ref": "#/components/responses/something_wrong"
+          },
+          "default": {
+            "$ref": "#/components/responses/something_wrong"
+          }
+        }
+      }
+    },
     "/advertising": {
       "get": {
         "tags": [
@@ -126,179 +309,6 @@
           },
           "401": {
             "$ref": "#/components/responses/unauthorized_error"
-          },
-          "500": {
-            "$ref": "#/components/responses/something_wrong"
-          },
-          "default": {
-            "$ref": "#/components/responses/something_wrong"
-          }
-        }
-      }
-    },
-    "/me": {
-      "post": {
-        "tags": [
-          "Me"
-        ],
-        "summary": "Registers user",
-        "description": "Create your user",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/customer_basic_fields"
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "password": {
-                        "description": "The user password",
-                        "type": "string",
-                        "format": "password",
-                        "example": "mystrongpassword1111"
-                      }
-                    }
-                  }
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "headers": {
-              "Authorization": {
-                "schema": {
-                  "type": "string",
-                  "example": "Bearer <TOKEN>"
-                }
-              }
-            }
-          },
-          "500": {
-            "$ref": "#/components/responses/something_wrong"
-          },
-          "default": {
-            "$ref": "#/components/responses/something_wrong"
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "Me"
-        ],
-        "summary": "User full info",
-        "description": "Get your user full info. May require password or some sort of additional validation in future. IN PROGRESS",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/customer_full_profile"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/me/short": {
-      "get": {
-        "tags": [
-          "Me"
-        ],
-        "summary": "User short info",
-        "description": "Get your user short info. Reasoning behind this method - allow some level of user info exposure without additional validation except already used JWT. Full user info may require additional validation in future.",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "firstname": {
-                      "description": "The user first name",
-                      "type": "string",
-                      "example": "John"
-                    },
-                    "lastname": {
-                      "description": "The user last name",
-                      "type": "string",
-                      "example": "Doe"
-                    },
-                    "avatar": {
-                      "description": "The user avatar url",
-                      "type": "string",
-                      "format": "url",
-                      "example": "https://vignette.wikia.nocookie.net/southpark/images/9/95/Kyle-broflovski.png/revision/latest?cb=20190411033301"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "$ref": "#/components/responses/unauthorized_error"
-          },
-          "500": {
-            "$ref": "#/components/responses/something_wrong"
-          },
-          "default": {
-            "$ref": "#/components/responses/something_wrong"
-          }
-        }
-      }
-    },
-    "/authorization": {
-      "post": {
-        "tags": [
-          "Me"
-        ],
-        "summary": "Authenticate user",
-        "description": "Authenticate your user and get JWT token",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "email": {
-                    "description": "The user mail",
-                    "type": "string",
-                    "format": "email",
-                    "example": "john.doe@gmail.com"
-                  },
-                  "password": {
-                    "description": "The user password",
-                    "type": "string",
-                    "format": "password",
-                    "example": "mystrongpassword1111"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "headers": {
-              "Authorization": {
-                "schema": {
-                  "type": "string",
-                  "example": "Bearer <TOKEN>"
-                }
-              }
-            }
           },
           "500": {
             "$ref": "#/components/responses/something_wrong"
@@ -1433,6 +1443,21 @@
               "type": "string"
             },
             "example": "6c940cb8-1a3e-43bf-a1f9-8acff2793def"
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "description": "Expected type of document",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/operation_type"
+                }
+              ],
+              "example": "send"
+            }
           }
         ],
         "responses": {
