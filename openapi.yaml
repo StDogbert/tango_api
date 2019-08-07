@@ -1307,6 +1307,20 @@ paths:
       summary: Search operations
       description: Search existing operations
       parameters:
+        - in: header
+          name: X-Page
+          schema:
+            type: integer
+            default: 1
+            example: 5
+          required: false
+        - in: header
+          name: X-Page-Size
+          schema:
+            type: integer
+            default: 100
+            example: 10
+          required: false
         - in: query
           name: types
           schema:
@@ -1355,6 +1369,22 @@ paths:
       responses:
         '200':
           description: OK
+          headers:
+            X-Page:
+              schema:
+                type: integer
+                example: 5
+              description: Number of returned page
+            X-Page-Size:
+              schema:
+                type: integer
+                example: 10
+              description: Number of operations per returned page
+            X-Page-Count:
+              schema:
+                type: integer
+                example: 15
+              description: Total number of pages for requested page size
           content:
             application/json:
               schema:
