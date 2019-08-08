@@ -513,15 +513,13 @@ paths:
             format: uuid
             example: ff530c93-c7d5-46b9-ad66-88706003aded
         - in: query
-          name: status
-          description: Status of document
+          name: ready
+          description: If ready is true status of document will be set to true if all required fields are present. If not all fields are present this parameter will be ignored. Ready is only field that can be used with request body simultaniously.
           required: false
           schema:
-            type: string
-            allOf:
-              - $ref: '#/components/schemas/operation_status'
-            example: ready
-            default: created
+            type: boolean
+            example: true
+            default: false
       requestBody:
         required: false
         content:
@@ -562,12 +560,6 @@ paths:
                   description: Id of a selected transfer options
                   example:
                     id: ff530c93-c7d5-46b9-ad66-88706003aded
-                status:
-                  type: string
-                  allOf:
-                    - $ref: '#/components/schemas/operation_status'
-                  example: ready
-                  default: created
       responses:
         '200':
           description: OK
@@ -666,7 +658,15 @@ paths:
           required: true
           schema:
             type: string
-          example: 49b63448-650d-4e33-a5a6-d7258724d618
+            example: 49b63448-650d-4e33-a5a6-d7258724d618
+        - in: query
+          name: ready
+          description: If ready is true status of document will be set to true if all required fields are present. If not all fields are present this parameter will be ignored. Ready can be used with request body simultaniously.
+          required: false
+          schema:
+            type: boolean
+            example: true
+            default: false
       requestBody:
         required: false
         content:
@@ -707,12 +707,6 @@ paths:
                   description: Id of a selected transfer options
                   example:
                     id: ff530c93-c7d5-46b9-ad66-88706003aded
-                status:
-                  type: string
-                  allOf:
-                    - $ref: '#/components/schemas/operation_status'
-                  example: ready
-                  default: created
               example:
                 preferred_agent:
                   id: 014d81df-ff4b-4580-9adf-a7379e888caa
@@ -882,6 +876,14 @@ paths:
           schema:
             type: string
           example: 9a708769-776c-48e3-b19a-bbc5395ab365
+        - in: query
+          name: ready
+          description: If ready is true status of document will be set to true if all required fields are present. If not all fields are present this parameter will be ignored. Ready can be used with request body simultaniously.
+          required: false
+          schema:
+            type: boolean
+            example: true
+            default: false
       requestBody:
         required: false
         content:
@@ -894,12 +896,6 @@ paths:
                   description: Id of an agent to start deal with
                   example:
                     id: 014d81df-ff4b-4580-9adf-a7379e888caa
-                status:
-                  type: string
-                  allOf:
-                    - $ref: '#/components/schemas/operation_status'
-                  example: ready
-                  default: created
       responses:
         '200':
           description: OK
