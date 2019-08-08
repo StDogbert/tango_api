@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.2.2",
+    "version": "1.2.3",
     "title": "Tango API",
     "description": "This is a sample for Tango API"
   },
