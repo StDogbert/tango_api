@@ -524,7 +524,7 @@ paths:
             format: uuid
             example: 'ff530c93-c7d5-46b9-ad66-88706003aded'
         - in: query
-          name: ready
+          name: is_ready
           description: If ready is true status of document will be set to true if all required fields are present. If not all fields are present this parameter will be ignored. Ready is only field that can be used with request body simultaniously.
           required: false
           schema:
@@ -672,7 +672,7 @@ paths:
             type: string
             example: '49b63448-650d-4e33-a5a6-d7258724d618'
         - in: query
-          name: ready
+          name: is_ready
           description: If ready is true status of document will be set to true if all required fields are present. If not all fields are present this parameter will be ignored. Ready can be used with request body simultaniously.
           required: false
           schema:
@@ -891,7 +891,7 @@ paths:
             type: string
           example: '9a708769-776c-48e3-b19a-bbc5395ab365'
         - in: query
-          name: ready
+          name: is_ready
           description: If ready is true status of document will be set to true if all required fields are present. If not all fields are present this parameter will be ignored. Ready can be used with request body simultaniously.
           required: false
           schema:
