@@ -29,11 +29,6 @@ tags:
     externalDocs:
       description: Find out more
       url: http://tango.md
-  - name: Payouts
-    description: Payouts
-    externalDocs:
-      description: Find out more
-      url: http://tango.md
 
 paths:
   /registration:
@@ -116,9 +111,7 @@ paths:
           content:
             application/json: 
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/customer_full_profile'
+                $ref: '#/components/schemas/customer_full_profile'
 
   /me/short:
     get:
@@ -1601,6 +1594,7 @@ components:
               description: Customer resident city
               allOf:
                 - $ref: "#/components/schemas/city"
+
     identifiable_object:
       required:
         - id
