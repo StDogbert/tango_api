@@ -652,7 +652,8 @@
                         "send_currency": "USD",
                         "exchange_rate": 0.7271,
                         "fee_amount": 3,
-                        "total_send_amount": 57.3
+                        "total_send_amount": 57.3,
+                        "updated": "2019-08-02T08:57:59.375Z"
                       },
                       {
                         "id": "baa3a9ae-524f-4fd6-855a-b6791463784e",
@@ -668,7 +669,8 @@
                         "send_currency": "USD",
                         "exchange_rate": 1,
                         "fee_amount": 1.5,
-                        "total_send_amount": 55.8
+                        "total_send_amount": 55.8,
+                        "updated": "2019-08-02T08:57:59.375Z"
                       },
                       {
                         "id": "ff530c93-c7d5-46b9-ad66-88706003aded",
@@ -684,7 +686,8 @@
                         "send_currency": "USD",
                         "exchange_rate": 0.7275,
                         "fee_amount": 2,
-                        "total_send_amount": 56.3
+                        "total_send_amount": 56.3,
+                        "updated": "2019-08-02T08:57:59.375Z"
                       }
                     ]
                   }
@@ -959,7 +962,8 @@
                         "receive_currency": "EUR",
                         "exchange_rate": 0.7271,
                         "fee_amount": 1.5,
-                        "total_send_amount": 101.5
+                        "total_send_amount": 101.5,
+                        "updated": "2019-08-02T08:57:59.375Z"
                       }
                     }
                   }
@@ -1271,7 +1275,8 @@
                       "name": "Sigue Money Transfer"
                     },
                     "receive_amount": 72.71,
-                    "receive_currency": "EUR"
+                    "receive_currency": "EUR",
+                    "updated": "2019-08-02T08:57:59.375Z"
                   }
                 }
               }
@@ -1409,7 +1414,8 @@
                       "name": "Sigue Money Transfer"
                     },
                     "receive_amount": 72.71,
-                    "receive_currency": "EUR"
+                    "receive_currency": "EUR",
+                    "updated": "2019-08-02T08:57:59.375Z"
                   }
                 }
               }
@@ -1457,6 +1463,16 @@
                 }
               ],
               "example": "send"
+            }
+          },
+          {
+            "in": "query",
+            "name": "ASAP",
+            "description": "As Soon As Possible. If this parameter is set to false instead of returning current state of document and then requesting update on server in background request will be performed, document updated and only then user will receive response.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
             }
           }
         ],
@@ -1583,7 +1599,8 @@
                         "receive_currency": "EUR",
                         "exchange_rate": 0.7271,
                         "fee_amount": 1.5,
-                        "total_send_amount": 101.5
+                        "total_send_amount": 101.5,
+                        "updated": "2019-08-02T08:57:59.375Z"
                       }
                     }
                   },
@@ -1683,7 +1700,8 @@
                         "receive_currency": "EUR",
                         "exchange_rate": 0.7271,
                         "fee_amount": 1.5,
-                        "total_send_amount": 101.5
+                        "total_send_amount": 101.5,
+                        "updated": "2019-08-02T08:57:59.375Z"
                       }
                     }
                   },
@@ -1738,7 +1756,8 @@
                           "name": "Sigue Money Transfer"
                         },
                         "receive_amount": 72.71,
-                        "receive_currency": "EUR"
+                        "receive_currency": "EUR",
+                        "updated": "2019-08-02T08:57:59.375Z"
                       }
                     }
                   },
@@ -1820,7 +1839,8 @@
                           "name": "Sigue Money Transfer"
                         },
                         "receive_amount": 72.71,
-                        "receive_currency": "EUR"
+                        "receive_currency": "EUR",
+                        "updated": "2019-08-02T08:57:59.375Z"
                       }
                     }
                   }
@@ -1930,6 +1950,16 @@
             },
             "required": false,
             "description": "If present server will return operations only till (excluding) this date"
+          },
+          {
+            "in": "query",
+            "name": "ASAP",
+            "description": "As Soon As Possible. If this parameter is set to false instead of returning current state of documents and then requesting update on server in background request will be performed, documents updated and only then user will receive response.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true
+            }
           }
         ],
         "responses": {
@@ -2569,6 +2599,11 @@
               }
             ],
             "example": "EUR"
+          },
+          "updated": {
+            "description": "Date of last fee, exchange rate and receive amount recalculation",
+            "type": "string",
+            "format": "date-time"
           }
         }
       },

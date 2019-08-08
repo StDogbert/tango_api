@@ -437,6 +437,7 @@ paths:
                       exchange_rate: 0.7271
                       fee_amount: 3
                       total_send_amount: 57.3
+                      updated: '2019-08-02T08:57:59.375Z'
                     - id: baa3a9ae-524f-4fd6-855a-b6791463784e
                       name: CMT ITA USD USD
                       organization:
@@ -450,6 +451,7 @@ paths:
                       exchange_rate: 1
                       fee_amount: 1.5
                       total_send_amount: 55.8
+                      updated: '2019-08-02T08:57:59.375Z'
                     - id: ff530c93-c7d5-46b9-ad66-88706003aded
                       name: SIG ITA USD EUR
                       organization:
@@ -463,6 +465,7 @@ paths:
                       exchange_rate: 0.7275
                       fee_amount: 2
                       total_send_amount: 56.3
+                      updated: '2019-08-02T08:57:59.375Z'
   /sends:
     post:
       tags:
@@ -651,6 +654,7 @@ paths:
                       exchange_rate: 0.7271
                       fee_amount: 1.5
                       total_send_amount: 101.5
+                      updated: '2019-08-02T08:57:59.375Z'
         '401':
           $ref: '#/components/responses/unauthorized_error'
         '500':
@@ -865,6 +869,7 @@ paths:
                     name: Sigue Money Transfer
                   receive_amount: 72.71
                   receive_currency: EUR
+                  updated: '2019-08-02T08:57:59.375Z'
         '401':
           $ref: '#/components/responses/unauthorized_error'
         '500':
@@ -964,6 +969,7 @@ paths:
                     name: Sigue Money Transfer
                   receive_amount: 72.71
                   receive_currency: EUR
+                  updated: '2019-08-02T08:57:59.375Z'
         '401':
           $ref: '#/components/responses/unauthorized_error'
         '500':
@@ -992,6 +998,13 @@ paths:
             allOf:
               - $ref: '#/components/schemas/operation_type'
             example: send
+        - in: query
+          name: ASAP
+          description: 'As Soon As Possible. If this parameter is set to false instead of returning current state of document and then requesting update on server in background request will be performed, document updated and only then user will receive response.'
+          required: false
+          schema:
+            type: boolean
+            default: true
       responses:
         '200':
           description: Operation exists
@@ -1095,6 +1108,7 @@ paths:
                       exchange_rate: 0.7271
                       fee_amount: 1.5
                       total_send_amount: 101.5
+                      updated: '2019-08-02T08:57:59.375Z'
                 send_executed:
                   value:
                     id: 49b63448-650d-4e33-a5a6-d7258724d618
@@ -1180,6 +1194,7 @@ paths:
                       exchange_rate: 0.7271
                       fee_amount: 1.5
                       total_send_amount: 101.5
+                      updated: '2019-08-02T08:57:59.375Z'
                 payout_created:
                   value:
                     id: 9a708769-776c-48e3-b19a-bbc5395ab365
@@ -1225,6 +1240,7 @@ paths:
                         name: Sigue Money Transfer
                       receive_amount: 72.71
                       receive_currency: EUR
+                      updated: '2019-08-02T08:57:59.375Z'
                 payout_executed:
                   value:
                     id: 9a708769-776c-48e3-b19a-bbc5395ab365
@@ -1294,6 +1310,7 @@ paths:
                         name: Sigue Money Transfer
                       receive_amount: 72.71
                       receive_currency: EUR
+                      updated: '2019-08-02T08:57:59.375Z'
         '401':
           $ref: '#/components/responses/unauthorized_error'
         '500':
@@ -1366,6 +1383,13 @@ paths:
             example: '2019-08-05T11:04:22.397Z'
           required: false
           description: If present server will return operations only till (excluding) this date
+        - in: query
+          name: ASAP
+          description: 'As Soon As Possible. If this parameter is set to false instead of returning current state of documents and then requesting update on server in background request will be performed, documents updated and only then user will receive response.'
+          required: false
+          schema:
+            type: boolean
+            default: true
       responses:
         '200':
           description: OK
@@ -1799,6 +1823,10 @@ components:
           allOf:
             - $ref: '#/components/schemas/currency_code'
           example: EUR
+        updated:
+          description: 'Date of last fee, exchange rate and receive amount recalculation'
+          type: string
+          format: date-time
     transfer_payout_contract:
       description: Base details for the transfer.
       allOf:
