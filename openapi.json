@@ -764,7 +764,7 @@
           },
           {
             "in": "query",
-            "name": "ready",
+            "name": "is_ready",
             "description": "If ready is true status of document will be set to true if all required fields are present. If not all fields are present this parameter will be ignored. Ready is only field that can be used with request body simultaniously.",
             "required": false,
             "schema": {
@@ -976,7 +976,7 @@
           },
           {
             "in": "query",
-            "name": "ready",
+            "name": "is_ready",
             "description": "If ready is true status of document will be set to true if all required fields are present. If not all fields are present this parameter will be ignored. Ready can be used with request body simultaniously.",
             "required": false,
             "schema": {
@@ -1288,7 +1288,7 @@
           },
           {
             "in": "query",
-            "name": "ready",
+            "name": "is_ready",
             "description": "If ready is true status of document will be set to true if all required fields are present. If not all fields are present this parameter will be ignored. Ready can be used with request body simultaniously.",
             "required": false,
             "schema": {
