@@ -413,6 +413,21 @@ paths:
             type: string
             format: uuid
             example: 98ad3e5c-3882-4002-b9c4-bcf97556f735
+        - in: query
+          name: 'country[id]'
+          description: Country
+          required: false
+          schema:
+            type: string
+            format: uuid
+            example: 8a83d6fb-8732-496e-a8ff-0ec20215b1eb
+        - in: query
+          name: is_resident
+          description: Is resident
+          required: false
+          schema:
+            type: boolean
+            example: true
       requestBody:
         required: false
         content:
@@ -433,6 +448,16 @@ paths:
                   description: Id of a correspondent location city
                   example:
                     id: 98ad3e5c-3882-4002-b9c4-bcf97556f735
+                country:
+                  allOf:
+                    - $ref: '#/components/schemas/identifiable_object'
+                  description: Id of a correspondent country
+                  example:
+                    id: 8a83d6fb-8732-496e-a8ff-0ec20215b1eb
+                is_resident:
+                  description: Is resident
+                  type: boolean
+                  example: true
       responses:
         '200':
           description: OK
@@ -487,6 +512,21 @@ paths:
             type: string
             format: uuid
             example: 98ad3e5c-3882-4002-b9c4-bcf97556f735
+        - in: query
+          name: 'country[id]'
+          description: Country
+          required: false
+          schema:
+            type: string
+            format: uuid
+            example: 8a83d6fb-8732-496e-a8ff-0ec20215b1eb
+        - in: query
+          name: is_resident
+          description: Is resident
+          required: false
+          schema:
+            type: boolean
+            example: true
       requestBody:
         required: false
         content:
@@ -507,6 +547,16 @@ paths:
                   description: Id of a correspondent location city
                   example:
                     id: 98ad3e5c-3882-4002-b9c4-bcf97556f735
+                country:
+                  allOf:
+                    - $ref: '#/components/schemas/identifiable_object'
+                  description: Id of a correspondent country
+                  example:
+                    id: 8a83d6fb-8732-496e-a8ff-0ec20215b1eb
+                is_resident:
+                  description: Is resident
+                  type: boolean
+                  example: true
       responses:
         '200':
           description: OK
@@ -553,6 +603,11 @@ paths:
                             id: 8a83d6fb-8732-496e-a8ff-0ec20215b1eb
                             code: USA
                             name: United States
+                        country:
+                          id: 8a83d6fb-8732-496e-a8ff-0ec20215b1eb
+                          code: USA
+                          name: United States
+                        is_resident: true
                         is_user: false
                       - id: a531b9f3-822d-4817-9641-f628a984d1aa
                         firstname: Jhon
@@ -565,6 +620,11 @@ paths:
                             id: 19241586-e09a-4cda-9a34-31561f8097e1
                             code: ITA
                             name: Italy
+                        country:
+                          id: 19241586-e09a-4cda-9a34-31561f8097e1
+                          code: ITA
+                          name: Italy
+                        is_resident: false
                         is_user: false
                     generated:
                       - id: f42e5570-0b04-4973-898f-445f342a0954
@@ -578,6 +638,11 @@ paths:
                             id: 5d54dad8-f05c-499c-b2d1-b1ae7c0ca4ae
                             code: MDA
                             name: Moldova
+                        country:
+                          id: 5d54dad8-f05c-499c-b2d1-b1ae7c0ca4ae
+                          code: MDA
+                          name: Moldova
+                        is_resident: true
                         is_user: true
                         phone: '37369000001'
                       - id: 12419fe5-2771-4212-bbaf-ab626bb11d03
@@ -591,6 +656,11 @@ paths:
                             id: 5d54dad8-f05c-499c-b2d1-b1ae7c0ca4ae
                             code: MDA
                             name: Moldova
+                        country:
+                          id: 5d54dad8-f05c-499c-b2d1-b1ae7c0ca4ae
+                          code: MDA
+                          name: Moldova
+                        is_resident: true
                         is_user: true
                         phone: '37369000002'
         '401':
@@ -836,6 +906,11 @@ paths:
                           id: 19241586-e09a-4cda-9a34-31561f8097e1
                           code: ITA
                           name: Italy
+                      country:
+                        id: 19241586-e09a-4cda-9a34-31561f8097e1
+                        code: ITA
+                        name: Italy
+                      is_resident: true
                     receiver:
                       id: df9d59bc-a237-4972-9b09-08ffdc01a399
                       firstname: Jane
@@ -849,6 +924,11 @@ paths:
                           id: 19241586-e09a-4cda-9a34-31561f8097e1
                           code: ITA
                           name: Italy
+                      country:
+                        id: 19241586-e09a-4cda-9a34-31561f8097e1
+                        code: ITA
+                        name: Italy
+                      is_resident: true
                       is_user: true
                     contract:
                       id: ff530c93-c7d5-46b9-ad66-88706003aded
@@ -984,6 +1064,11 @@ paths:
                       id: 19241586-e09a-4cda-9a34-31561f8097e1
                       code: ITA
                       name: Italy
+                  country:
+                    id: 19241586-e09a-4cda-9a34-31561f8097e1
+                    code: ITA
+                    name: Italy
+                  is_resident: true
   /payouts/search:
     get:
       tags:
@@ -1072,6 +1157,11 @@ paths:
                       id: 19241586-e09a-4cda-9a34-31561f8097e1
                       code: ITA
                       name: Italy
+                  country:
+                    id: 19241586-e09a-4cda-9a34-31561f8097e1
+                    code: ITA
+                    name: Italy
+                  is_resident: true
                 contract:
                   id: ff530c93-c7d5-46b9-ad66-88706003aded
                   name: SIG ITA EUR
@@ -1161,6 +1251,11 @@ paths:
                       id: 19241586-e09a-4cda-9a34-31561f8097e1
                       code: ITA
                       name: Italy
+                  country:
+                    id: 19241586-e09a-4cda-9a34-31561f8097e1
+                    code: ITA
+                    name: Italy
+                  is_resident: true
                 receiver:
                   id: df9d59bc-a237-4972-9b09-08ffdc01a399
                   firstname: Jane
@@ -1174,6 +1269,11 @@ paths:
                       id: 19241586-e09a-4cda-9a34-31561f8097e1
                       code: ITA
                       name: Italy
+                  country:
+                    id: 19241586-e09a-4cda-9a34-31561f8097e1
+                    code: ITA
+                    name: Italy
+                  is_resident: true
                 contract:
                   id: ff530c93-c7d5-46b9-ad66-88706003aded
                   name: SIG ITA EUR
@@ -1251,6 +1351,11 @@ paths:
                           id: 19241586-e09a-4cda-9a34-31561f8097e1
                           code: ITA
                           name: Italy
+                      country:
+                        id: 19241586-e09a-4cda-9a34-31561f8097e1
+                        code: ITA
+                        name: Italy
+                      is_resident: true
                 send_ready:
                   value:
                     id: 49b63448-650d-4e33-a5a6-d7258724d618
@@ -1294,6 +1399,11 @@ paths:
                           id: 19241586-e09a-4cda-9a34-31561f8097e1
                           code: ITA
                           name: Italy
+                      country:
+                        id: 19241586-e09a-4cda-9a34-31561f8097e1
+                        code: ITA
+                        name: Italy
+                      is_resident: true
                     receiver:
                       id: df9d59bc-a237-4972-9b09-08ffdc01a399
                       firstname: Jane
@@ -1307,6 +1417,11 @@ paths:
                           id: 19241586-e09a-4cda-9a34-31561f8097e1
                           code: ITA
                           name: Italy
+                      country:
+                        id: 19241586-e09a-4cda-9a34-31561f8097e1
+                        code: ITA
+                        name: Italy
+                      is_resident: true
                       is_user: true
                     contract:
                       id: ff530c93-c7d5-46b9-ad66-88706003aded
@@ -1380,6 +1495,11 @@ paths:
                           id: 19241586-e09a-4cda-9a34-31561f8097e1
                           code: ITA
                           name: Italy
+                      country:
+                        id: 19241586-e09a-4cda-9a34-31561f8097e1
+                        code: ITA
+                        name: Italy
+                      is_resident: true
                     receiver:
                       id: df9d59bc-a237-4972-9b09-08ffdc01a399
                       firstname: Jane
@@ -1393,6 +1513,11 @@ paths:
                           id: 19241586-e09a-4cda-9a34-31561f8097e1
                           code: ITA
                           name: Italy
+                      country:
+                        id: 19241586-e09a-4cda-9a34-31561f8097e1
+                        code: ITA
+                        name: Italy
+                      is_resident: true
                       is_user: true
                     contract:
                       id: ff530c93-c7d5-46b9-ad66-88706003aded
@@ -1432,6 +1557,11 @@ paths:
                           id: 19241586-e09a-4cda-9a34-31561f8097e1
                           code: ITA
                           name: Italy
+                      country:
+                        id: 19241586-e09a-4cda-9a34-31561f8097e1
+                        code: ITA
+                        name: Italy
+                      is_resident: true
                     receiver:
                       id: df9d59bc-a237-4972-9b09-08ffdc01a399
                       firstname: Jane
@@ -1445,6 +1575,11 @@ paths:
                           id: 19241586-e09a-4cda-9a34-31561f8097e1
                           code: ITA
                           name: Italy
+                      country:
+                        id: 19241586-e09a-4cda-9a34-31561f8097e1
+                        code: ITA
+                        name: Italy
+                      is_resident: true
                     contract:
                       id: ff530c93-c7d5-46b9-ad66-88706003aded
                       name: SIG ITA EUR
@@ -1502,6 +1637,11 @@ paths:
                           id: 19241586-e09a-4cda-9a34-31561f8097e1
                           code: ITA
                           name: Italy
+                      country:
+                        id: 19241586-e09a-4cda-9a34-31561f8097e1
+                        code: ITA
+                        name: Italy
+                      is_resident: true
                     receiver:
                       id: df9d59bc-a237-4972-9b09-08ffdc01a399
                       firstname: Jane
@@ -1515,6 +1655,11 @@ paths:
                           id: 19241586-e09a-4cda-9a34-31561f8097e1
                           code: ITA
                           name: Italy
+                      country:
+                        id: 19241586-e09a-4cda-9a34-31561f8097e1
+                        code: ITA
+                        name: Italy
+                      is_resident: true
                     contract:
                       id: ff530c93-c7d5-46b9-ad66-88706003aded
                       name: SIG ITA EUR
@@ -1716,6 +1861,12 @@ components:
           example: Doe
         location:
           $ref: '#/components/schemas/city'
+        country:
+          $ref: '#/components/schemas/country'
+        is_resident:
+          type: boolean
+          description: Indicates if correspondent is resident of selected country
+          example: true
         is_user:
           type: boolean
           description: Indicates if it is correspondent generated from user based on your phone book

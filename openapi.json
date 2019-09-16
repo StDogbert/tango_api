@@ -634,6 +634,27 @@
               "format": "uuid",
               "example": "98ad3e5c-3882-4002-b9c4-bcf97556f735"
             }
+          },
+          {
+            "in": "query",
+            "name": "country[id]",
+            "description": "Country",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "8a83d6fb-8732-496e-a8ff-0ec20215b1eb"
+            }
+          },
+          {
+            "in": "query",
+            "name": "is_resident",
+            "description": "Is resident",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "example": true
+            }
           }
         ],
         "requestBody": {
@@ -662,6 +683,22 @@
                     "example": {
                       "id": "98ad3e5c-3882-4002-b9c4-bcf97556f735"
                     }
+                  },
+                  "country": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/identifiable_object"
+                      }
+                    ],
+                    "description": "Id of a correspondent country",
+                    "example": {
+                      "id": "8a83d6fb-8732-496e-a8ff-0ec20215b1eb"
+                    }
+                  },
+                  "is_resident": {
+                    "description": "Is resident",
+                    "type": "boolean",
+                    "example": true
                   }
                 }
               }
@@ -749,6 +786,27 @@
               "format": "uuid",
               "example": "98ad3e5c-3882-4002-b9c4-bcf97556f735"
             }
+          },
+          {
+            "in": "query",
+            "name": "country[id]",
+            "description": "Country",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "8a83d6fb-8732-496e-a8ff-0ec20215b1eb"
+            }
+          },
+          {
+            "in": "query",
+            "name": "is_resident",
+            "description": "Is resident",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "example": true
+            }
           }
         ],
         "requestBody": {
@@ -777,6 +835,22 @@
                     "example": {
                       "id": "98ad3e5c-3882-4002-b9c4-bcf97556f735"
                     }
+                  },
+                  "country": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/identifiable_object"
+                      }
+                    ],
+                    "description": "Id of a correspondent country",
+                    "example": {
+                      "id": "8a83d6fb-8732-496e-a8ff-0ec20215b1eb"
+                    }
+                  },
+                  "is_resident": {
+                    "description": "Is resident",
+                    "type": "boolean",
+                    "example": true
                   }
                 }
               }
@@ -846,6 +920,12 @@
                               "name": "United States"
                             }
                           },
+                          "country": {
+                            "id": "8a83d6fb-8732-496e-a8ff-0ec20215b1eb",
+                            "code": "USA",
+                            "name": "United States"
+                          },
+                          "is_resident": true,
                           "is_user": false
                         },
                         {
@@ -862,6 +942,12 @@
                               "name": "Italy"
                             }
                           },
+                          "country": {
+                            "id": "19241586-e09a-4cda-9a34-31561f8097e1",
+                            "code": "ITA",
+                            "name": "Italy"
+                          },
+                          "is_resident": false,
                           "is_user": false
                         }
                       ],
@@ -880,6 +966,12 @@
                               "name": "Moldova"
                             }
                           },
+                          "country": {
+                            "id": "5d54dad8-f05c-499c-b2d1-b1ae7c0ca4ae",
+                            "code": "MDA",
+                            "name": "Moldova"
+                          },
+                          "is_resident": true,
                           "is_user": true,
                           "phone": "37369000001"
                         },
@@ -897,6 +989,12 @@
                               "name": "Moldova"
                             }
                           },
+                          "country": {
+                            "id": "5d54dad8-f05c-499c-b2d1-b1ae7c0ca4ae",
+                            "code": "MDA",
+                            "name": "Moldova"
+                          },
+                          "is_resident": true,
                           "is_user": true,
                           "phone": "37369000002"
                         }
@@ -1251,7 +1349,13 @@
                             "code": "ITA",
                             "name": "Italy"
                           }
-                        }
+                        },
+                        "country": {
+                          "id": "19241586-e09a-4cda-9a34-31561f8097e1",
+                          "code": "ITA",
+                          "name": "Italy"
+                        },
+                        "is_resident": true
                       },
                       "receiver": {
                         "id": "df9d59bc-a237-4972-9b09-08ffdc01a399",
@@ -1268,6 +1372,12 @@
                             "name": "Italy"
                           }
                         },
+                        "country": {
+                          "id": "19241586-e09a-4cda-9a34-31561f8097e1",
+                          "code": "ITA",
+                          "name": "Italy"
+                        },
+                        "is_resident": true,
                         "is_user": true
                       },
                       "contract": {
@@ -1467,7 +1577,13 @@
                         "code": "ITA",
                         "name": "Italy"
                       }
-                    }
+                    },
+                    "country": {
+                      "id": "19241586-e09a-4cda-9a34-31561f8097e1",
+                      "code": "ITA",
+                      "name": "Italy"
+                    },
+                    "is_resident": true
                   }
                 }
               }
@@ -1587,7 +1703,13 @@
                         "code": "ITA",
                         "name": "Italy"
                       }
-                    }
+                    },
+                    "country": {
+                      "id": "19241586-e09a-4cda-9a34-31561f8097e1",
+                      "code": "ITA",
+                      "name": "Italy"
+                    },
+                    "is_resident": true
                   },
                   "contract": {
                     "id": "ff530c93-c7d5-46b9-ad66-88706003aded",
@@ -1711,7 +1833,13 @@
                         "code": "ITA",
                         "name": "Italy"
                       }
-                    }
+                    },
+                    "country": {
+                      "id": "19241586-e09a-4cda-9a34-31561f8097e1",
+                      "code": "ITA",
+                      "name": "Italy"
+                    },
+                    "is_resident": true
                   },
                   "receiver": {
                     "id": "df9d59bc-a237-4972-9b09-08ffdc01a399",
@@ -1727,7 +1855,13 @@
                         "code": "ITA",
                         "name": "Italy"
                       }
-                    }
+                    },
+                    "country": {
+                      "id": "19241586-e09a-4cda-9a34-31561f8097e1",
+                      "code": "ITA",
+                      "name": "Italy"
+                    },
+                    "is_resident": true
                   },
                   "contract": {
                     "id": "ff530c93-c7d5-46b9-ad66-88706003aded",
@@ -1839,7 +1973,13 @@
                             "code": "ITA",
                             "name": "Italy"
                           }
-                        }
+                        },
+                        "country": {
+                          "id": "19241586-e09a-4cda-9a34-31561f8097e1",
+                          "code": "ITA",
+                          "name": "Italy"
+                        },
+                        "is_resident": true
                       }
                     }
                   },
@@ -1890,7 +2030,13 @@
                             "code": "ITA",
                             "name": "Italy"
                           }
-                        }
+                        },
+                        "country": {
+                          "id": "19241586-e09a-4cda-9a34-31561f8097e1",
+                          "code": "ITA",
+                          "name": "Italy"
+                        },
+                        "is_resident": true
                       },
                       "receiver": {
                         "id": "df9d59bc-a237-4972-9b09-08ffdc01a399",
@@ -1907,6 +2053,12 @@
                             "name": "Italy"
                           }
                         },
+                        "country": {
+                          "id": "19241586-e09a-4cda-9a34-31561f8097e1",
+                          "code": "ITA",
+                          "name": "Italy"
+                        },
+                        "is_resident": true,
                         "is_user": true
                       },
                       "contract": {
@@ -1991,7 +2143,13 @@
                             "code": "ITA",
                             "name": "Italy"
                           }
-                        }
+                        },
+                        "country": {
+                          "id": "19241586-e09a-4cda-9a34-31561f8097e1",
+                          "code": "ITA",
+                          "name": "Italy"
+                        },
+                        "is_resident": true
                       },
                       "receiver": {
                         "id": "df9d59bc-a237-4972-9b09-08ffdc01a399",
@@ -2008,6 +2166,12 @@
                             "name": "Italy"
                           }
                         },
+                        "country": {
+                          "id": "19241586-e09a-4cda-9a34-31561f8097e1",
+                          "code": "ITA",
+                          "name": "Italy"
+                        },
+                        "is_resident": true,
                         "is_user": true
                       },
                       "contract": {
@@ -2053,7 +2217,13 @@
                             "code": "ITA",
                             "name": "Italy"
                           }
-                        }
+                        },
+                        "country": {
+                          "id": "19241586-e09a-4cda-9a34-31561f8097e1",
+                          "code": "ITA",
+                          "name": "Italy"
+                        },
+                        "is_resident": true
                       },
                       "receiver": {
                         "id": "df9d59bc-a237-4972-9b09-08ffdc01a399",
@@ -2069,7 +2239,13 @@
                             "code": "ITA",
                             "name": "Italy"
                           }
-                        }
+                        },
+                        "country": {
+                          "id": "19241586-e09a-4cda-9a34-31561f8097e1",
+                          "code": "ITA",
+                          "name": "Italy"
+                        },
+                        "is_resident": true
                       },
                       "contract": {
                         "id": "ff530c93-c7d5-46b9-ad66-88706003aded",
@@ -2136,7 +2312,13 @@
                             "code": "ITA",
                             "name": "Italy"
                           }
-                        }
+                        },
+                        "country": {
+                          "id": "19241586-e09a-4cda-9a34-31561f8097e1",
+                          "code": "ITA",
+                          "name": "Italy"
+                        },
+                        "is_resident": true
                       },
                       "receiver": {
                         "id": "df9d59bc-a237-4972-9b09-08ffdc01a399",
@@ -2152,7 +2334,13 @@
                             "code": "ITA",
                             "name": "Italy"
                           }
-                        }
+                        },
+                        "country": {
+                          "id": "19241586-e09a-4cda-9a34-31561f8097e1",
+                          "code": "ITA",
+                          "name": "Italy"
+                        },
+                        "is_resident": true
                       },
                       "contract": {
                         "id": "ff530c93-c7d5-46b9-ad66-88706003aded",
@@ -2451,6 +2639,14 @@
           },
           "location": {
             "$ref": "#/components/schemas/city"
+          },
+          "country": {
+            "$ref": "#/components/schemas/country"
+          },
+          "is_resident": {
+            "type": "boolean",
+            "description": "Indicates if correspondent is resident of selected country",
+            "example": true
           },
           "is_user": {
             "type": "boolean",
