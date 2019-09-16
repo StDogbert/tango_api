@@ -220,6 +220,85 @@
         }
       }
     },
+    "/me/change_password": {
+      "post": {
+        "tags": [
+          "Me"
+        ],
+        "summary": "Change users password",
+        "description": "Change users password",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "password": {
+                    "description": "The user password",
+                    "type": "string",
+                    "format": "password",
+                    "example": "Mystrongpassword_1111"
+                  },
+                  "new_password": {
+                    "description": "New users password",
+                    "type": "string",
+                    "format": "password",
+                    "example": "Mystrongpassword_2222"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "$ref": "#/components/responses/unauthorized_error"
+          },
+          "500": {
+            "$ref": "#/components/responses/something_wrong"
+          },
+          "default": {
+            "$ref": "#/components/responses/something_wrong"
+          }
+        }
+      }
+    },
+    "/me/update": {
+      "post": {
+        "tags": [
+          "Me"
+        ],
+        "summary": "Update user info",
+        "description": "Update your user info",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/customer_full_profile"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "$ref": "#/components/responses/unauthorized_error"
+          },
+          "500": {
+            "$ref": "#/components/responses/something_wrong"
+          },
+          "default": {
+            "$ref": "#/components/responses/something_wrong"
+          }
+        }
+      }
+    },
     "/advertising": {
       "get": {
         "tags": [
@@ -438,6 +517,209 @@
                 }
               }
             }
+          },
+          "401": {
+            "$ref": "#/components/responses/unauthorized_error"
+          },
+          "500": {
+            "$ref": "#/components/responses/something_wrong"
+          },
+          "default": {
+            "$ref": "#/components/responses/something_wrong"
+          }
+        }
+      }
+    },
+    "/correspondents/create": {
+      "post": {
+        "tags": [
+          "Transfers"
+        ],
+        "summary": "Create correspondent",
+        "description": "Create correspondent",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "firstname",
+            "description": "Correspondent firstname",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "Bill"
+            }
+          },
+          {
+            "in": "query",
+            "name": "lastname",
+            "description": "Correspondent lastname",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "Doe"
+            }
+          },
+          {
+            "in": "query",
+            "name": "location[id]",
+            "description": "Location",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "98ad3e5c-3882-4002-b9c4-bcf97556f735"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "firstname": {
+                    "description": "Correspondent firstname",
+                    "type": "string",
+                    "example": "Bill"
+                  },
+                  "lastname": {
+                    "description": "Correspondent lastname",
+                    "type": "string",
+                    "example": "Doe"
+                  },
+                  "location": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/identifiable_object"
+                      }
+                    ],
+                    "description": "Id of a correspondent location city",
+                    "example": {
+                      "id": "98ad3e5c-3882-4002-b9c4-bcf97556f735"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "expected": {
+                    "value": {
+                      "id": "08af1651-affd-4e87-88cf-3ccc5269858c"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/unauthorized_error"
+          },
+          "500": {
+            "$ref": "#/components/responses/something_wrong"
+          },
+          "default": {
+            "$ref": "#/components/responses/something_wrong"
+          }
+        }
+      }
+    },
+    "/correspondents/{correspondent_id}": {
+      "post": {
+        "tags": [
+          "Transfers"
+        ],
+        "summary": "Update correspondent",
+        "description": "Update correspondent",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "correspondent_id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "08af1651-affd-4e87-88cf-3ccc5269858c"
+            }
+          },
+          {
+            "in": "query",
+            "name": "firstname",
+            "description": "Correspondent firstname",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "Bill"
+            }
+          },
+          {
+            "in": "query",
+            "name": "lastname",
+            "description": "Correspondent lastname",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "example": "Doe"
+            }
+          },
+          {
+            "in": "query",
+            "name": "location[id]",
+            "description": "Location",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "98ad3e5c-3882-4002-b9c4-bcf97556f735"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "firstname": {
+                    "description": "Correspondent firstname",
+                    "type": "string",
+                    "example": "Bill"
+                  },
+                  "lastname": {
+                    "description": "Correspondent lastname",
+                    "type": "string",
+                    "example": "Doe"
+                  },
+                  "location": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/identifiable_object"
+                      }
+                    ],
+                    "description": "Id of a correspondent location city",
+                    "example": {
+                      "id": "98ad3e5c-3882-4002-b9c4-bcf97556f735"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
           },
           "401": {
             "$ref": "#/components/responses/unauthorized_error"
