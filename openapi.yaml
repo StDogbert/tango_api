@@ -248,6 +248,47 @@ paths:
           $ref: '#/components/responses/something_wrong'
         default:
           $ref: '#/components/responses/something_wrong'
+  /countries:
+    get:
+      tags:
+        - Commons
+      summary: Countries list
+      description: Get countries list
+      parameters:
+        - in: query
+          name: search
+          required: true
+          schema:
+            type: string
+            pattern: '^[A-Za-z]+'
+          example: mo
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/country'
+              examples:
+                expected:
+                  value:
+                    - id: 5d54dad8-f05c-499c-b2d1-b1ae7c0ca4ae
+                      code: MDA
+                      name: Moldova
+                    - id: b6ec0cc1-d54d-4015-a124-9b0f99f57cea
+                      code: MON
+                      name: Monako
+                    - id: 744ffc14-7553-4e90-97cb-4a38ae923cbd
+                      code: COM
+                      name: Comoros
+        '401':
+          $ref: '#/components/responses/unauthorized_error'
+        '500':
+          $ref: '#/components/responses/something_wrong'
+        default:
+          $ref: '#/components/responses/something_wrong'
   /locations:
     get:
       tags:
