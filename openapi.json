@@ -534,6 +534,57 @@
         }
       }
     },
+    "/documents": {
+      "get": {
+        "tags": [
+          "Commons"
+        ],
+        "summary": "Documents list",
+        "description": "Get documents list",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/document"
+                  }
+                },
+                "examples": {
+                  "expected": {
+                    "value": [
+                      {
+                        "id": "40d318ef-7b36-41c6-9a01-f864c2f23a17",
+                        "name": "Birth certificate"
+                      },
+                      {
+                        "id": "651a02bc-7ca7-42c6-8556-8564032ceedb",
+                        "name": "Driving license"
+                      },
+                      {
+                        "id": "b16e5e46-1759-4468-9039-2b0d2577682b",
+                        "name": "Passport"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/unauthorized_error"
+          },
+          "500": {
+            "$ref": "#/components/responses/something_wrong"
+          },
+          "default": {
+            "$ref": "#/components/responses/something_wrong"
+          }
+        }
+      }
+    },
     "/currencies": {
       "get": {
         "tags": [
@@ -2868,6 +2919,25 @@
               },
               "country": {
                 "$ref": "#/components/schemas/country"
+              }
+            }
+          }
+        ]
+      },
+      "document": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/identifiable_record"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "example": "40d318ef-7b36-41c6-9a01-f864c2f23a17"
+              },
+              "name": {
+                "description": "Document name",
+                "example": "Birth certificate"
               }
             }
           }
