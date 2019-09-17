@@ -367,15 +367,18 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/document'
+                  $ref: '#/components/schemas/id_document_type'
               examples:
                 expected:
                   value:
                     - id: '40d318ef-7b36-41c6-9a01-f864c2f23a17'
+                      code: 'BCF'
                       name: 'Birth certificate'
                     - id: '651a02bc-7ca7-42c6-8556-8564032ceedb'
+                      code: 'DVL'
                       name: 'Driving license'
                     - id: 'b16e5e46-1759-4468-9039-2b0d2577682b'
+                      code: 'PSP'
                       name: 'Passport'
         401:
           $ref: '#/components/responses/unauthorized_error'
@@ -1988,20 +1991,70 @@ components:
         - $ref: "#/components/schemas/customer_basic_profile"
         - type: object
           properties:
+            middlename:
+              description: The user middle name
+              type: string
+              example: Sergeevich
             personal_number:
               description: Social/National/Insurance number
               type: string
               example: 'SN1998398754'
-            id_document_type:
-              $ref: "#/components/schemas/id_document_type"
-            id_document_number:
-              description: Identification document number
-              type: string
-              example: 'AB1299734'
-            location:
-              description: Customer resident city
-              allOf:
-                - $ref: "#/components/schemas/city"
+            id_document:
+              type: object
+              properties:
+                id_document_type:
+                  $ref: "#/components/schemas/id_document_type"
+                id_document_seria:
+                  description: Identification document number
+                  type: string
+                  example: 'AB'
+                id_document_number:
+                  description: Identification document number
+                  type: integer
+                  example: 1299734
+                id_document_issue_date:
+                  description: Identification document issue date
+                  type: string
+                  format: date
+                  example: "2010-01-01"
+                id_document_issuer:
+                  description: Identification document issuer
+                  type: string
+                  example: 'Office 5'
+            citizenship:
+              type: object
+              properties:
+                country:
+                  description: The user citizenship
+                  allOf:
+                    - $ref: '#/components/schemas/country'
+                is_resident:
+                  type: boolean
+                  description: Indicates if user is resident of selected country
+                  example: true
+            address:
+              type: object
+              properties:
+                location:
+                  description: The user resident city
+                  allOf:
+                    - $ref: "#/components/schemas/city"
+                street:
+                  description: The user address street
+                  type: string
+                  example: Stefan cel Mare
+                block:
+                  description: The user address block
+                  type: string
+                  example: H
+                house:
+                  description: The user address house
+                  type: string
+                  example: '54'
+                appartment:
+                  description: The user address appartment
+                  type: string
+                  example: '4A'
 
     identifiable_object:
       required:
@@ -2066,17 +2119,6 @@ components:
               example: 'Lonigo'
             country:
               $ref: "#/components/schemas/country"
-
-    document:
-      allOf:
-        - $ref: "#/components/schemas/identifiable_record"
-        - type: object
-          properties:
-            id:
-              example: '40d318ef-7b36-41c6-9a01-f864c2f23a17'
-            name:
-              description: Document name
-              example: 'Birth certificate'
 
     agent:
       required:
