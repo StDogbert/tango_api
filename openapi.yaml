@@ -62,6 +62,63 @@ paths:
           $ref: '#/components/responses/something_wrong'
         default:
           $ref: '#/components/responses/something_wrong'
+  /authorization/phone:
+    post:
+      tags:
+        - Authentication
+      summary: Registers user using phone number
+      description: Create your user using phone number. User can already exist and then this method will just authorize him
+      parameters:
+        - in: query
+          name: phone
+          description: The user phone
+          required: false
+          schema:
+            type: string
+            format: phone
+            example: +44 20 7377 8855
+      responses:
+        '200':
+          description: OK
+        '500':
+          $ref: '#/components/responses/something_wrong'
+        default:
+          $ref: '#/components/responses/something_wrong'
+  /authorization/confirm_phone_code:
+    post:
+      tags:
+        - Authentication
+      summary: Confirms user phone number
+      description: Confirms your user phone number
+      parameters:
+        - in: query
+          name: phone
+          description: The user phone
+          required: false
+          schema:
+            type: string
+            format: phone
+            example: +44 20 7377 8855
+        - in: query
+          name: code
+          description: The user phone
+          required: false
+          schema:
+            type: string
+            format: phone
+            example: +44 20 7377 8855
+      responses:
+        '200':
+          description: OK
+          headers:
+            Authorization:
+              schema:
+                type: string
+                example: Bearer <TOKEN>
+        '500':
+          $ref: '#/components/responses/something_wrong'
+        default:
+          $ref: '#/components/responses/something_wrong'
   /authorization:
     post:
       tags:
