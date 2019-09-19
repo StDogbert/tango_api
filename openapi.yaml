@@ -314,7 +314,7 @@ paths:
       parameters:
         - in: query
           name: search
-          required: true
+          required: false
           schema:
             type: string
             pattern: '^[A-Za-z]+'
