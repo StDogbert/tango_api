@@ -45,6 +45,14 @@
         "description": "Find out more",
         "url": "http://tango.md"
       }
+    },
+    {
+      "name": "Payments",
+      "description": "Payments",
+      "externalDocs": {
+        "description": "Find out more",
+        "url": "http://tango.md"
+      }
     }
   ],
   "paths": {
@@ -122,7 +130,7 @@
           }
         ],
         "responses": {
-          "200": {
+          "204": {
             "description": "OK"
           },
           "500": {
@@ -336,7 +344,7 @@
           }
         },
         "responses": {
-          "200": {
+          "204": {
             "description": "OK"
           },
           "401": {
@@ -369,8 +377,76 @@
           }
         },
         "responses": {
-          "200": {
+          "204": {
             "description": "OK"
+          },
+          "401": {
+            "$ref": "#/components/responses/unauthorized_error"
+          },
+          "500": {
+            "$ref": "#/components/responses/something_wrong"
+          },
+          "default": {
+            "$ref": "#/components/responses/something_wrong"
+          }
+        }
+      }
+    },
+    "/avatar": {
+      "post": {
+        "tags": [
+          "Commons"
+        ],
+        "summary": "Upload avatar",
+        "description": "Upload new image to use as avatar and deletes old one",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "avatar": {
+                    "description": "Image base 64 string",
+                    "type": "string",
+                    "example": "askdjhasd23213"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "OK"
+          },
+          "401": {
+            "$ref": "#/components/responses/unauthorized_error"
+          },
+          "500": {
+            "$ref": "#/components/responses/something_wrong"
+          },
+          "default": {
+            "$ref": "#/components/responses/something_wrong"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Commons"
+        ],
+        "summary": "Get avatar",
+        "description": "Get avatar if one was uploaded by avatar post method",
+        "responses": {
+          "200": {
+            "description": "Avatar image",
+            "content": {
+              "image/png": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
           },
           "401": {
             "$ref": "#/components/responses/unauthorized_error"
@@ -997,7 +1073,7 @@
           }
         },
         "responses": {
-          "200": {
+          "204": {
             "description": "OK"
           },
           "401": {
@@ -2013,6 +2089,51 @@
                     "receive_amount": 72.71,
                     "receive_currency": "EUR",
                     "updated": "2019-08-02T08:57:59.375Z"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/unauthorized_error"
+          },
+          "500": {
+            "$ref": "#/components/responses/something_wrong"
+          },
+          "default": {
+            "$ref": "#/components/responses/something_wrong"
+          }
+        }
+      }
+    },
+    "/payments/search": {
+      "get": {
+        "tags": [
+          "Payments"
+        ],
+        "summary": "Search available payments by code",
+        "description": "Search available payments by code",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "code",
+            "description": "Send identifier in payment provider system",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "000000"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Payment exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/payment"
                   }
                 }
               }
@@ -3533,6 +3654,26 @@
                   }
                 ],
                 "description": "Execution summary of the transfer operation. For future use could include additional fields."
+              }
+            }
+          }
+        ]
+      },
+      "payment": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/operation"
+          },
+          {
+            "type": "object",
+            "required": [
+              "code"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "description": "Payment provider operation code",
+                "example": "000000"
               }
             }
           }
